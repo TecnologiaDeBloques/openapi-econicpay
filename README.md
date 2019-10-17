@@ -1,4 +1,4 @@
-# test OpenAPI Specification
+# OpenAPI Specification
 
 
 ## Working on specification
