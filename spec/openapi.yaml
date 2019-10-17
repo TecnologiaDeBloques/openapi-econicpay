@@ -1,249 +1,1572 @@
-# This is an **example** API to demonstrate features of OpenAPI specification.
-# It doesn't cover all OpenAPI features. For more full example check out: https://github.com/APIs-guru/petstore_extended
-
 openapi: 3.0.0
 info:
-  version: '1.0.0' # Your API version
-  # It can be any string but it is better to use semantic versioning: http://semver.org/
-  # Warning: OpenAPI require version to be string, but without quotation YAML can recognize it as number.
-  
-  title: Example.com # Replace with your API title
-  # Keep it simple. Don't add "API" or version at the end of the string.
-
-  termsOfService: 'https://example.com/terms/' # [Optional] Replace with an URL to your ToS
+  version: 1.0.0
+  title: Red Cacao API Reference
+  termsOfService: "https://www.monedacacao.com/terminos/"
   contact:
-    email: contact@example.com # [Optional] Replace with your contact email
-    url: 'http://example.com/contact' # [Optional] Replace with link to your contact form
+    email: holamundo@monedacacao.com
+    url: "http://www.monedacacao.com/contacto"
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
   x-logo:
-    url: 'https://apis.guru/openapi-template/logo.png'
-  
-  # Describe your API here, you can use GFM (https://guides.github.com/features/mastering-markdown) here
+    url: "https://storage.googleapis.com/cacao-static-content/logos/red-cacao/cr_logo_green.png"
   description: |
-    This is an **example** API to demonstrate features of OpenAPI specification
     # Introduction
-    This specification is intended to to be a good starting point for describing your API in 
-    [OpenAPI/Swagger format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md).
-    It also demonstrates features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo) tool and 
-    [ReDoc](https://github.com/Rebilly/ReDoc) documentation engine. So beyond the standard OpenAPI syntax we use a few 
-    [vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).
+    The Red Cacao API is built on HTTP around REST and resource oriented URLs. 
+    It accepts form-encoded request bodies and returns JSON responses.
+    Standard HTTP response codes and verbs are used. 
 
-    # OpenAPI Specification
-    The goal of The OpenAPI Specification is to define a standard, language-agnostic interface to REST APIs which
-    allows both humans and computers to discover and understand the capabilities of the service without access to source
-    code, documentation, or through network traffic inspection. When properly defined via OpenAPI, a consumer can 
-    understand and interact with the remote service with a minimal amount of implementation logic. Similar to what
-    interfaces have done for lower-level programming, OpenAPI removes the guesswork in calling the service.
-externalDocs:
-  description: Find out how to create Github repo for your OpenAPI spec.
-  url: 'https://github.com/Rebilly/generator-openapi-repo'
+    You can try the Red Cacao API in its testnet environment, which does 
+    not affect live data, utilize real money or interacts with production banking networks. 
+    Each environment has its own accounts and objects, so you will need
+    to create a CacaoID account for the testnet environment.
 
-# A list of tags used by the specification with additional metadata.
-# The order of the tags can be used to reflect on their order by the parsing tools.
+    # Authentication
+    Red Cacao offers two forms of authentication:
+      - OAuth2
+      - API Key
+
+    # Pagination
+
+    TODO
+
+    # SDKs
+    TODO
+
+    # Getting Started
+    TODO
+
 tags:
-  - name: Echo
-    description: Example echo operations
-  - name: User
-    description: Operations about user
+  - name: Currency
+    description: |
+      A digital asset that can be used as a medium of exchange.
+      <SchemaDefinition schemaRef="#/components/schemas/Currency" />
+  - name: Cacao Account
+    description: |
+      Cacao Accounts store a certain currency and can transfer their balance to other Cacao and External accounts that utilize the same currency. 
+      <SchemaDefinition schemaRef="#/components/schemas/CacaoAccount" />
+  - name: Transaction
+    description: |
+      Transactions represent all monetary transfers of value from a Cacao Account 
+      <SchemaDefinition schemaRef="#/components/schemas/Transaction" />
+  - name: Financial Integration
+    description: |
+      A Financial Integration is a third party integration that can be used to fund or withdraw a determined currency.
+      <SchemaDefinition schemaRef="#/components/schemas/FinancialIntegration" />
+  - name: External Account
+    description: |
+      External Accounts are third party integrations such as banking accounts or debit cards that can be used by Cacao Accounts for funding or withdrawing from a certain currency.
+      <SchemaDefinition schemaRef="#/components/schemas/ExternalAccount" />
+  - name: Payment Request
+    description: |
+      Payment Requests are soliciations for payments that can be fullfilled by the requested party.
+      <SchemaDefinition schemaRef="#/components/schemas/PaymentRequest" />
+  - name: Prepay
+    description: |
+      Prepays are payments done in advance that can be fullfilled by the recipient. (NOT IMPLEMENTED)
+      <SchemaDefinition schemaRef="#/components/schemas/Prepay" />
+x-tagGroups:
+  - name: "Resource Models"
+    tags:
+      - Currency
+      - Cacao Account
+      - Transaction
+      - Financial Integration
+      - External Account
+      - Payment Request
+      - Prepay
+  - name: "Currencies and Integrations"
+    tags:
+      - Currencies
+      - Financial Integrations
+  - name: "Accounts"
+    tags:
+      - Cacao Accounts
+      - External Accounts
+  - name: "Payments & Transactions"
+    tags:
+      - Transactions
+      - Payment Requests
+      - Prepays
+security:
+  - oAuth: []
+  - SecretApiKey: []
 servers:
-  - url: 'http://example.com/api/v1'
-  - url: 'https://example.com/api/v1'
-
-# Holds the relative paths to the individual endpoints. The path is appended to the
-# basePath in order to construct the full URL. 
+  - url: "https://testnet.redcacao.com/api/v1/"
+    description: Testing environment
+  - url: "https://production.example.com/api/v1"
+    description: Production environment
 paths:
-  '/users/{username}': # path parameter in curly braces
-
-    # parameters list that are used with each operation for this path
-    parameters:
-      - name: pretty_print
-        in: query
-        description: Pretty print response
-        schema:
-          type: boolean
-    get: # documentation for GET operation for this path
+  "/cacao_accounts/":
+    get:
       tags:
-        - User
-      
-      # summary is up to 120 symbold but we recommend to be shortest as possible
-      summary: Get user by user name
-      
-      # you can use GFM in operation description too: https://guides.github.com/features/mastering-markdown
-      description: |
-        Some description of the operation. 
-        You can use `markdown` here.
-      
-      # operationId should be unique across the whole specification
-      operationId: getUserByName
-      
-      # list of parameters for the operation
+        - Cacao Accounts
+      summary: List Cacao accounts
+      description: Returns a list of all your Cacao accounts sorted chronologicaly by creation date.
+      operationId: listCacaoAccounts
       parameters:
-        - name: username
-          in: path
-          description: The name that needs to be fetched
-          required: true
-          schema:
-            type: string
-        - name: with_email
-          in: query
-          description: Filter users without email
-          schema:
-            type: boolean
-      
-      # security schemas applied to this operation
-      security:
-        - main_auth:
-            - 'read:users' # for auth2 provide list of scopes here
-        - api_key: []
-      responses: # list of responses
-        '200':
-          description: Success
-          content:
-            application/json: # operation response mime type
-              schema: # response schema can be specified for each response
-                $ref: '#/components/schemas/User'
-              example: # response example
-                username: user1
-                email: user@example.com
-        '403':
-          description: Forbidden
-        '404':
-          description: User not found
-    # documentation for PUT operation for this path
-    put:
-      tags:
-        - User
-      summary: Updated user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
-      parameters:
-        - name: username
-          in: path
-          description: The name that needs to be updated
-          required: true
-          schema:
-            type: string
-      security:
-        - main_auth:
-            - 'write:users'
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
       responses:
-        '200':
+        "200":
           description: OK
-        '400':
-          description: Invalid user supplied
-        '404':
-          description: User not found
-      # request body documentation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: Updated user object
-        required: true
-  /echo: # path parameter in curly braces
-    post: # documentation for POST operation for this path
-      tags:
-        - Echo
-      summary: Echo test
-      description: Receive the exact message you've sent
-      operationId: echo
-      security:
-        - api_key: []
-        - basic_auth: []
-      responses:
-        '200':
-          description: OK
-          # document headers for this response
-          headers:
-            X-Rate-Limit: # Header name
-              description: calls per hour allowed by the user
-              schema: # Header schema
-                type: integer
-                format: int32
-            X-Expires-After:
-              $ref: '#/components/headers/ExpiresAfter'
           content:
             application/json:
               schema:
-                type: string
-              examples:
-                response:
-                  value: Hello world!
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
+                type: array
+                items:
+                  $ref: "#/components/schemas/CacaoAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Create a Cacao account
+      description: Creates a new Cacao account
+      operationId: createCacaoAccount
       requestBody:
         content:
           application/json:
             schema:
-              type: string
-              example: Hello world!
-          application/xml:
-            schema:
-              type: string
-              example: Hello world!
-        description: Echo payload
+              $ref: "#/components/schemas/CreateCacaoAccountRequest"
         required: true
-        
-# An object to hold reusable parts that can be used across the spec
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateCacaoAccountResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    get:
+      tags:
+        - Cacao Accounts
+      summary: Get a Cacao account.
+      description: Retrieve an existing Cacao account by it's address.
+      operationId: getCacaoAccount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CacaoAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    put:
+      tags:
+        - Cacao Accounts
+      summary: Update a Cacao account
+      description: Update an existing Cacao account
+      operationId: updateCacaoAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCacaoAccountRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CacaoAccountAlt"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      tags:
+        - Cacao Accounts
+      summary: Delete a Cacao account
+      description: Delete an empty Cacao account. The account must be empty before it can be deleted.
+      operationId: deleteCacaoAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCacaoAccountRequest"
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/authorizeOperator/":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Authorize an account Operator
+      description:
+        Authorize a profile with either `read-only` or `full-access` permissions to a Cacao Account.
+        Note that with `read-only` permissions, the profile will be able to see the balance and the full transaction history of the account.
+        Giving `full-access` permissions will allow the profile to `transfer`, `fund`, `withdraw`, `setAllowance`, `authorizeOperators`
+        and `revokeOperators` for the authorized Cacao Account. You can change the permission level with a subsequent call,
+        as the account will always have the last permission that was assigned.
+      operationId: authorizeOperator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthorizeOperatorRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorizeOperatorResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/revokeOperator/":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Revoke an account Operator
+      description:
+        Revoke permissions asigned to a Profile for a Cacao Account. By revoking its permissions, the profile
+        will have zero permissions for the account. If you wish to lower the permission level of an account you
+        need to use the `authorizeOperator` endpoint.
+      operationId: revokeOperator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RevokeOperatorRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RevokeOperatorResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/setAllowance/":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Set allowance for a Cacao account
+      description:
+        Gives the ability to withdraw a determined balance from this account to another Cacao account without further authorization from the "allower".
+        Subsecuent calls will set the allowance limit to the provided amount instead of incrementing the current allowance with the amount.
+      operationId: setAllowance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetAllowanceRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetAllowanceResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/checkAllowance/":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Check allowance for a Cacao account
+      description: Returns the allowance a Cacao account has from another Cacao account.
+      operationId: checkAllowance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckAllowanceRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckAllowanceResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/transfer/":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Transfer from a Cacao account
+      description: Transfer from a Cacao account to another Cacao account. Both accounts must share the same currency.
+      operationId: transferFromAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransferRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransferResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/fund/{external_address}":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+      - $ref: "#/components/parameters/externalAddress"
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Fund a Cacao account using an external account
+      description: Add balance to a Cacao account from a external account that has the same currency
+      operationId: fundAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FundRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/withdraw/{external_address}":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+      - $ref: "#/components/parameters/externalAddress"
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Withdraw from a Cacao account to an external account
+      description: Withdraw balance from a Cacao account to a external account.
+      operationId: withdrawFromAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WithdrawRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WithdrawResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/transactions/":
+    get:
+      tags:
+        - Transactions
+      summary: List account transactions
+      description: Returns a list of all your account transactions sorted chronologicaly by creation date.
+      operationId: listTransactions
+      parameters:
+        - $ref: "#/components/parameters/accountAddress"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/cacao_accounts/{account_address}/transactions/{transaction_id}":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+      - $ref: "#/components/parameters/transactionID"
+    get:
+      tags:
+        - Transactions
+      summary: Get a transaction
+      description: Retrieve an account transaction
+      operationId: getTransaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/payment_requests/":
+    get:
+      tags:
+        - Payment Requests
+      summary: List payment requests
+      description: Returns a list of your Payment Requests for a certain account sorted chronologicaly by creation date.
+      operationId: listPaymentRequests
+      parameters:
+        - $ref: "#/components/parameters/queryAccountAddress"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentRequest"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    post:
+      tags:
+        - Payment Requests
+      summary: Create a payment request
+      description: Create a new payment request
+      operationId: createPaymentRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePaymentRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentRequest"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/payment_requests/{id}":
+    parameters:
+      - $ref: "#/components/parameters/id"
+    get:
+      tags:
+        - Payment Requests
+      summary: Get a payment request
+      description: Retrieve a payment request from a profile
+      operationId: getPaymentRequest
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentRequest"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      tags:
+        - Payment Requests
+      summary: Delete a payment request
+      description: Delete a payment request from a profile
+      operationId: deletePaymentRequest
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/prepays/":
+    get:
+      tags:
+        - Prepays
+      summary: List prepays
+      description: Returns a list of all your unclaimed account prepays sorted by chronologicaly by creation date.
+      operationId: listPrepays
+      parameters:
+        - $ref: "#/components/parameters/queryAccountAddress"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Prepay"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    post:
+      tags:
+        - Prepays
+      summary: Create a prepay
+      description: Create a new prepay for a Cacao account
+      operationId: createPrepay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrepayRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prepay"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/prepays/{id}":
+    parameters:
+      - $ref: "#/components/parameters/id"
+    get:
+      tags:
+        - Prepays
+      summary: Get a prepay
+      description: Retrieve a prepay
+      operationId: getPrepay
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prepay"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/external_accounts/":
+    get:
+      tags:
+        - External Accounts
+      summary: List external accounts
+      description: Returns a list of your external accounts sorted chronologicaly by creation date.
+      operationId: listExternalAccounts
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    post:
+      tags:
+        - External Accounts
+      summary: Create an external account
+      description: Create a new external account
+      operationId: createExternalAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExternalAccountRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/external_accounts/{account_address}":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    get:
+      tags:
+        - External Accounts
+      summary: Get an external account
+      description: Retrieve a Cacao account
+      operationId: getExternalAccount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    put:
+      tags:
+        - External Accounts
+      summary: Update an external account
+      description: Update an external account
+      operationId: updateExternalAccount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateExternalAccountRequest"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      tags:
+        - External Accounts
+      summary: Delete an external account
+      description: Delete an external account
+      operationId: deleteExternalAccount
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
 components:
   schemas:
-    Email:
-      description: User email address
-      type: string
-      format: test
-      example: john.smith@example.com
-    User:
+    Currency:
       type: object
       properties:
-        username:
-          description: User supplied username
+        symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        name:
+          $ref: "#/components/schemas/CurrencyName"
+        supply:
+          $ref: "#/components/schemas/CurrencySupply"
+        funding_limit:
+          $ref: "#/components/schemas/CurrencyFundingLimit"
+        withdraw_limit:
+          $ref: "#/components/schemas/CurrencyWithdrawLimit"
+    CreateCurrencyRequest:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        balance:
+          $ref: "#/components/schemas/Balance"
+        accountName:
+          $ref: "#/components/schemas/AccountName"
+    CacaoAccount:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        currency_name:
+          $ref: "#/components/schemas/CurrencyName"
+        accountName:
+          $ref: "#/components/schemas/AccountName"
+        balance:
+          $ref: "#/components/schemas/Balance"
+    CacaoAccountAlt:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        balance:
+          $ref: "#/components/schemas/BalanceZero"
+        accountName:
+          $ref: "#/components/schemas/AccountNameEmergency"
+    CreateCacaoAccountRequest:
+      type: object
+      properties:
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        accountName:
+          $ref: "#/components/schemas/AccountName"
+    CreateCacaoAccountResponse:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        balance:
+          $ref: "#/components/schemas/BalanceZero"
+        accountName:
+          $ref: "#/components/schemas/AccountName"
+    UpdateCacaoAccountRequest:
+      type: object
+      properties:
+        accountName:
+          $ref: "#/components/schemas/AccountNameEmergency"
+    DeleteCacaoAccountRequest:
+      type: object
+      properties:
+        accountName:
+          $ref: "#/components/schemas/AccountName"
+    AuthorizeOperatorRequest:
+      type: object
+      properties:
+        authorized_operator:
+          $ref: "#/components/schemas/ProfileID"
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+    AuthorizeOperatorResponse:
+      type: object
+      properties:
+        authorized_operator:
+          $ref: "#/components/schemas/ProfileID"
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+    RevokeOperatorRequest:
+      type: object
+      properties:
+        authorized_operator:
+          $ref: "#/components/schemas/ProfileID"
+    RevokeOperatorResponse:
+      type: object
+      properties:
+        authorized_operator:
+          $ref: "#/components/schemas/ProfileID"
+        permissions:
+          description: The authorization level
           type: string
-          minLength: 4
-          example: John78
-        firstName:
-          description: User first name
+          example: ""
+    SetAllowanceRequest:
+      type: object
+      properties:
+        for:
+          $ref: "#/components/schemas/Address"
+        amount:
+          $ref: "#/components/schemas/Allowance"
+    SetAllowanceResponse:
+      type: object
+      properties:
+        for:
+          $ref: "#/components/schemas/Address"
+        amount:
+          $ref: "#/components/schemas/Allowance"
+    CheckAllowanceRequest:
+      type: object
+      properties:
+        for:
+          $ref: "#/components/schemas/Address"
+    CheckAllowanceResponse:
+      type: object
+      properties:
+        for:
+          $ref: "#/components/schemas/Address"
+        amount:
+          $ref: "#/components/schemas/Allowance"
+    TransferRequest:
+      type: object
+      properties:
+        receiver:
+          $ref: "#/components/schemas/Sender"
+        to:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        data:
+          $ref: "#/components/schemas/Data"
+        anonymous:
+          $ref: "#/components/schemas/Anonymous"
+    TransferResponse:
+      type: object
+      properties:
+        transaction_id:
+          $ref: "#/components/schemas/TransactionID"
+        status:
+          $ref: "#/components/schemas/Status"
+        sender:
+          $ref: "#/components/schemas/Sender"
+        receiver:
+          $ref: "#/components/schemas/Receiver"
+        from:
+          $ref: "#/components/schemas/Address"
+        to:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        fee:
+          $ref: "#/components/schemas/Fee"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        data:
+          $ref: "#/components/schemas/Data"
+    FundRequest:
+      type: object
+      properties:
+        external_account:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+    FundResponse:
+      type: object
+      properties:
+        transaction_id:
+          $ref: "#/components/schemas/TransactionID"
+        external_account:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+    WithdrawRequest:
+      type: object
+      properties:
+        external_account:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+    WithdrawResponse:
+      type: object
+      properties:
+        transaction_id:
+          $ref: "#/components/schemas/TransactionID"
+        external_account:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+    Transaction:
+      type: object
+      properties:
+        transaction_id:
+          $ref: "#/components/schemas/TransactionID"
+        status:
+          $ref: "#/components/schemas/Status"
+        sender:
+          $ref: "#/components/schemas/Sender"
+        receiver:
+          $ref: "#/components/schemas/Receiver"
+        from:
+          $ref: "#/components/schemas/Address"
+        to:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        fee:
+          $ref: "#/components/schemas/Fee"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        data:
+          $ref: "#/components/schemas/Data"
+    PaymentRequest:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/PaymentRequestID"
+        receiver:
+          $ref: "#/components/schemas/PaymentRequestReceiver"
+        to:
+          $ref: "#/components/schemas/PaymentRequestTo"
+        requested:
+          $ref: "#/components/schemas/PaymentRequestRequested"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+    CreatePaymentRequest:
+      type: object
+      properties:
+        requester:
+          $ref: "#/components/schemas/ProfileID"
+        responder:
+          $ref: "#/components/schemas/ProfileID"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        anonymous:
+          $ref: "#/components/schemas/Anonymous"
+    Prepay:
+      type: object
+      properties:
+        sender:
+          $ref: "#/components/schemas/ProfileID"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+    CreatePrepayRequest:
+      type: object
+      properties:
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        anonymous:
+          $ref: "#/components/schemas/Anonymous"
+    FinancialIntegration:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/FinancialIntegrationID"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        name:
+          $ref: "#/components/schemas/FinancialIntegrationName"
+        account_limit:
+          $ref: "#/components/schemas/FinancialIntegrationLimit"
+        funding:
+          $ref: "#/components/schemas/FinancialIntegrationFunding"
+        withdrawal:
+          $ref: "#/components/schemas/FinancialIntegrationWithdraw"
+    ExternalAccount:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        integration_id:
+          $ref: "#/components/schemas/FinancialIntegrationID"
+        linked_cacao_account:
+          $ref: "#/components/schemas/Address"
+        data:
+          description: "A valid JSON object that may contain extra data"
           type: string
-          minLength: 1
-          example: John
-        lastName:
-          description: User last name
+          example: '"{"CLABE":"03218000011835971"}'
+
+    CreateExternalAccountRequest:
+      type: object
+      properties:
+        address:
+          description: Unique SHA3-256 address
           type: string
-          minLength: 1
-          example: Smith
-        email:
-          $ref: '#/components/schemas/Email'
+    UpdateExternalAccountRequest:
+      type: object
+      properties:
+        address:
+          description: Unique SHA3-256 address
+          type: string
+    Address:
+      description: Unique identifier of an account to which monetary transactions are delivered.
+      type: string
+      minLength: 1
+      example: "0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826"
+    CurrencySymbol:
+      description: "Unique identifier for a currency. It is composed by 3 characters denoting the emitting institution followed by a hyphen and 3 chacters with the currency code"
+      type: string
+      minLength: 7
+      maxLength: 7
+      example: "CAO-MXN"
+    CurrencyName:
+      description: "Full name of the currency"
+      type: string
+      minLength: 1
+      example: "Pesos Mexicanos Cacao"
+    CurrencySupply:
+      description: "Total amount of coins in circulation."
+      type: integer
+      example: 243
+    CurrencyFundingLimit:
+      description: "Amount of coins an unverified account can fund."
+      type: integer
+      example: 5000
+    CurrencyWithdrawLimit:
+      description: "Amount of coins an unverified account can withdraw."
+      type: integer
+      example: 4000
+    Balance:
+      description: "Amount of coins present in the account."
+      type: integer
+      example: 243
+    BalanceZero:
+      description: "Amount of coins present in the account."
+      type: integer
+      example: 0
+    AccountName:
+      description: "User generated name of the account"
+      type: string
+      minLength: 1
+      example: "Savings"
+    AccountNameEmergency:
+      description: "User generated name of the account"
+      type: string
+      example: "Emergencies"
+    Status:
+      description: "The status of the transaction"
+      type: string
+      minLength: 1
+      example: "Success"
+    Amount:
+      description: "Amount paid or requested"
+      type: integer
+      minimum: 1
+      example: 293
+    Allowance:
+      description: "Amount allowed to withdraw from the account"
+      type: integer
+      minimum: 1
+      example: 420
+    Fee:
+      description: "Amount paid as a comission to a third-party"
+      type: integer
+      example: 5
+    Concept:
+      description: "General notion of the transaction"
+      type: string
+      example: Tacos from yesterday
+    Data:
+      description: "Extra data appended to the transaction"
+      type: string
+      example: '{ sender: "tecdebloques"}'
+    ProfileID:
+      description: "Profile identifier"
+      type: string
+      minLength: 1
+      example: "tecdebloques"
+    Permissions:
+      description: "The authorization level, can be `read-only` or `full-access`."
+      type: string
+      minLength: 1
+      example: "read-only"
+    Sender:
+      description: "The profile unique identifier of the sender"
+      type: string
+      example: "tony"
+    Receiver:
+      description: "The profile unique identifier of the recepient"
+      type: string
+      example: "thanos"
+    Anonymous:
+      description: "If the operation is anonymous the profile identifier will not be public"
+      type: boolean
+      example: false
+    Fulfilled:
+      description: "If the prepay has already been fulfiled"
+      type: boolean
+      example: false
+    FinancialIntegrationID:
+      description: Unique identifier of the the financial integration.
+      type: string
+      minLength: 1
+      example: "25106aa1b402cc3a067316316733470b9c4c20b94893a24b0ea06c84acc92bbf"
+    FinancialIntegrationName:
+      description: "The name of the financial integration"
+      minLength: 1
+      type: string
+      example: "STP"
+    FinancialIntegrationLimit:
+      description: "The amount of external accounts a financial integration may have"
+      type: integer
+      minimum: 1
+      example: 2
+    FinancialIntegrationFunding:
+      description: "Specifies if the financial integration can fund this currency"
+      type: boolean
+      example: true
+    FinancialIntegrationWithdraw:
+      description: "Specifies if the financial integration can withdraw from this currency"
+      type: boolean
+      example: false
+    PaymentRequestID:
+      description: Unique identifier of the payment request.
+      type: string
+      minLength: 1
+      example: "0xa933b5c1526baa60e6382a40c45c9e4d"
+    PaymentRequestReceiver:
+      description: Display name of who is requesting the payment.
+      type: string
+      minLength: 1
+      example: "Tecnología de Bloques"
+    PaymentRequestTo:
+      description: Unique identifier of an account to which the money will be sent.
+      type: string
+      minLength: 1
+      example: "0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826"
+    PaymentRequestRequested:
+      description: Unique identifier of the profile for which the request was created.
+      type: string
+      minLength: 1
+      example: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae"
+    TransactionID:
+      description: Unique identifier of the transaction.
+      type: string
+      minLength: 1
+      example: "d773cd4dc21975c3f3fec70bcf6e4b43463ce7c53050681f106790036cc6d8be"
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          description: The type of error returned.
+          type: string
+          example: invalid_request_error
+        code:
+          description: A short string indiciating the error reported.
+          type: string
+          example: ERR412
+        message:
+          description: A human readable message provinding more details about the error.
+          type: string
+          example: Account Address must be 20 characters long.
+  responses:
+    BadRequest:
+      description: "The request was unacceptable, often due a invalid or missing required parameter."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: "The request lacks valid authentication credentials for the target resource."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    RequestFailed:
+      description: "The request was valid but it failed."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: "The requested resource doesn't exist."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Conflict:
+      description: "The request conflicts with another request."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    TooManyRequests:
+      description: "Too many requests hit the API too quickly. Try again later or backoff your requests."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ServerError:
+      description: "Something went wrong on Cacao's end."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  parameters:
+    accountAddress:
+      name: account_address
+      in: path
+      description: "The address of the cacao account for which the operation will be applied"
+      required: true
+      schema:
+        type: string
+    externalAddress:
+      name: external_address
+      in: path
+      description: "The address of the external account for which the operation will be applied"
+      required: true
+      schema:
+        type: string
+    transactionID:
+      name: transaction_id
+      in: path
+      description: "The ID of the transaction"
+      required: true
+      schema:
+        type: string
+    profileID:
+      name: profile_id
+      in: path
+      description: "The unique identifier of the profile"
+      required: true
+      schema:
+        type: string
+    id:
+      name: id
+      in: path
+      description: "The unique identifier of the resource"
+      required: true
+      schema:
+        type: string
+    queryAccountAddress:
+      name: account_address
+      in: query
+      description: "The account address of the payment requester"
+      required: true
+      schema:
+        type: string
+    email:
+      name: email
+      in: query
+      description: "A filter on the list based on the email from the object owner. The value must be a string."
+      schema:
+        type: string
+    applicationId:
+      name: application_id
+      in: query
+      description: "A filter on the list based on the application_id from the object owner. The value must be a string."
+      schema:
+        type: string
+    limit:
+      name: limit
+      in: query
+      description: "A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10."
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+    offset:
+      name: start
+      in: query
+      description: "From what object number will the pagination start"
+      schema:
+        type: integer
+        minimum: 1
+
   headers:
     ExpiresAfter:
       description: date in UTC when token expires
       schema:
         type: string
         format: date-time
-  # Security scheme definitions that can be used across the specification.
+
   securitySchemes:
-    main_auth: # security definition name (you can name it as you want)
-      # the following options are specific to oauth2 type
-      type: oauth2 # authorization type, one of: oauth2, apiKey, http
+    oAuth:
+      description: "Blah"
+      type: oauth2
       flows:
         implicit:
-          authorizationUrl: 'http://example.com/api/oauth/dialog'
+          authorizationUrl: "http://example.com/api/oauth/dialog"
           scopes:
-            'read:users': read users info
-            'write:users': modify or remove users
-    api_key:  # security definition name (you can name it as you want)
-      type: apiKey 
-      # The following options are specific to apiKey type
-      in: header # Where API key will be passed: header or query
-      name: api_key # API key parameter name
-    basic_auth: # security definition name (you can name it as you want)
-      type: http
-      scheme: basic
+            "read:users": read users info
+            "write:users": modify or remove users
+    SecretApiKey:
+      type: apiKey
+      in: header
+      name: api_key
