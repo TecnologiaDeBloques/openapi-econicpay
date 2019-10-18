@@ -1179,33 +1179,39 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/PaymentRequestID"
-        receiver:
-          $ref: "#/components/schemas/PaymentRequestReceiver"
-        to:
-          $ref: "#/components/schemas/PaymentRequestTo"
-        requested:
-          $ref: "#/components/schemas/PaymentRequestRequested"
-        currency:
-          $ref: "#/components/schemas/CurrencySymbol"
-        amount:
-          $ref: "#/components/schemas/Amount"
-        concept:
-          $ref: "#/components/schemas/Concept"
-    CreatePaymentRequest:
-      type: object
-      properties:
-        requester:
-          $ref: "#/components/schemas/ProfileID"
-        responder:
-          $ref: "#/components/schemas/ProfileID"
-        currency:
+        requestor_profile_id:
+          $ref: "#/components/schemas/PaymentRequestRequestor"
+        requestor_address:
+          $ref: "#/components/schemas/PaymentRequestRequestorAddress"
+        requestor_name:
+          $ref: "#/components/schemas/PaymentRequestRequestorName"
+        requestee_profile_id:
+          $ref: "#/components/schemas/PaymentRequestRequestee"
+        currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
         amount:
           $ref: "#/components/schemas/Amount"
         concept:
           $ref: "#/components/schemas/Concept"
         anonymous:
-          $ref: "#/components/schemas/Anonymous"
+          $ref: "#/components/schemas/PaymentRequestAnonymous"
+    CreatePaymentRequest:
+      type: object
+      properties:
+        requestor_profile_id:
+          $ref: "#/components/schemas/PaymentRequestRequestor"
+        requestor_address:
+          $ref: "#/components/schemas/PaymentRequestRequestorAddress"
+        requestee_profile_id:
+          $ref: "#/components/schemas/PaymentRequestRequestee"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        anonymous:
+          $ref: "#/components/schemas/PaymentRequestAnonymous"
     Prepay:
       type: object
       properties:
@@ -1399,21 +1405,30 @@ components:
       type: string
       minLength: 1
       example: "0xa933b5c1526baa60e6382a40c45c9e4d"
-    PaymentRequestReceiver:
+    PaymentRequestRequestor:
+      description: Unique identifier of the profile that created the request.
+      type: string
+      minLength: 1
+      example: "0xba0b295669a9fd93d5f28d9ec85e40f4cb697bae"
+    PaymentRequestRequestorName:
       description: Display name of who is requesting the payment.
       type: string
       minLength: 1
       example: "Tecnología de Bloques"
-    PaymentRequestTo:
+    PaymentRequestRequestorAddress:
       description: Unique identifier of an account to which the money will be sent.
       type: string
       minLength: 1
       example: "0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826"
-    PaymentRequestRequested:
+    PaymentRequestRequestee:
       description: Unique identifier of the profile for which the request was created.
       type: string
       minLength: 1
       example: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae"
+    PaymentRequestAnonymous:
+      description: Flag determining if the request is anonymous.
+      type: boolean
+      example: false
     TransactionID:
       description: Unique identifier of the transaction.
       type: string
