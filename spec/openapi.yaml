@@ -988,9 +988,11 @@ components:
     CreateCacaoAccountRequest:
       type: object
       properties:
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountName"
     CreateCacaoAccountResponse:
       type: object
