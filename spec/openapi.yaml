@@ -521,10 +521,10 @@ paths:
   "/cacao_accounts/{account_address}/transactions/":
     get:
       tags:
-        - Transactions
+        - Cacao Accounts
       summary: List account transactions
       description: Returns a list of all your account transactions sorted chronologicaly by creation date.
-      operationId: listTransactions
+      operationId: listAccountTransactions
       parameters:
         - $ref: "#/components/parameters/accountAddress"
         - $ref: "#/components/parameters/limit"
@@ -549,15 +549,14 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/transactions/{transaction_id}":
+  "/transactions/{transaction_id}":
     parameters:
-      - $ref: "#/components/parameters/accountAddress"
       - $ref: "#/components/parameters/transactionID"
     get:
       tags:
         - Transactions
       summary: Get a transaction
-      description: Retrieve an account transaction
+      description: Retrieve an existing transaction from its id
       operationId: getTransaction
       responses:
         "200":
@@ -1232,11 +1231,36 @@ components:
           $ref: "#/components/schemas/Address"
         amount:
           $ref: "#/components/schemas/Allowance"
+    Transaction:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/TransactionID"
+        status:
+          $ref: "#/components/schemas/TransactionStatus"
+        sender:
+          $ref: "#/components/schemas/TransactionSender"
+        receiver:
+          $ref: "#/components/schemas/TransactionReceiver"
+        from:
+          $ref: "#/components/schemas/Address"
+        to:
+          $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        fee:
+          $ref: "#/components/schemas/Fee"
+        concept:
+          $ref: "#/components/schemas/TransactionConcept"
+        data:
+          $ref: "#/components/schemas/TransactionData"
     TransferRequest:
       type: object
       properties:
         receiver:
-          $ref: "#/components/schemas/Sender"
+          $ref: "#/components/schemas/TransactionReceiver"
         to:
           $ref: "#/components/schemas/Address"
         currency:
@@ -1244,7 +1268,7 @@ components:
         amount:
           $ref: "#/components/schemas/Amount"
         concept:
-          $ref: "#/components/schemas/Concept"
+          $ref: "#/components/schemas/TransactionConcept"
         data:
           $ref: "#/components/schemas/Data"
         anonymous:
@@ -1255,11 +1279,11 @@ components:
         transaction_id:
           $ref: "#/components/schemas/TransactionID"
         status:
-          $ref: "#/components/schemas/Status"
+          $ref: "#/components/schemas/TransactionStatus"
         sender:
-          $ref: "#/components/schemas/Sender"
+          $ref: "#/components/schemas/TransactionSender"
         receiver:
-          $ref: "#/components/schemas/Receiver"
+          $ref: "#/components/schemas/TransactionReceiver"
         from:
           $ref: "#/components/schemas/Address"
         to:
@@ -1271,7 +1295,7 @@ components:
         fee:
           $ref: "#/components/schemas/Fee"
         concept:
-          $ref: "#/components/schemas/Concept"
+          $ref: "#/components/schemas/TransactionConcept"
         data:
           $ref: "#/components/schemas/Data"
     FundRequest:
@@ -1314,31 +1338,7 @@ components:
           $ref: "#/components/schemas/CurrencySymbol"
         amount:
           $ref: "#/components/schemas/Amount"
-    Transaction:
-      type: object
-      properties:
-        transaction_id:
-          $ref: "#/components/schemas/TransactionID"
-        status:
-          $ref: "#/components/schemas/Status"
-        sender:
-          $ref: "#/components/schemas/Sender"
-        receiver:
-          $ref: "#/components/schemas/Receiver"
-        from:
-          $ref: "#/components/schemas/Address"
-        to:
-          $ref: "#/components/schemas/Address"
-        currency:
-          $ref: "#/components/schemas/CurrencySymbol"
-        amount:
-          $ref: "#/components/schemas/Amount"
-        fee:
-          $ref: "#/components/schemas/Fee"
-        concept:
-          $ref: "#/components/schemas/Concept"
-        data:
-          $ref: "#/components/schemas/Data"
+
     PaymentRequest:
       type: object
       properties:
@@ -1515,11 +1515,6 @@ components:
       description: "User generated name of the account"
       type: string
       example: "Emergencies"
-    Status:
-      description: "The status of the transaction"
-      type: string
-      minLength: 1
-      example: "Success"
     Amount:
       description: "Amount paid or requested"
       type: integer
@@ -1552,14 +1547,6 @@ components:
       type: string
       minLength: 1
       example: "read-only"
-    Sender:
-      description: "The profile unique identifier of the sender"
-      type: string
-      example: "tony"
-    Receiver:
-      description: "The profile unique identifier of the recepient"
-      type: string
-      example: "thanos"
     Anonymous:
       description: "If the operation is anonymous the profile identifier will not be public"
       type: boolean
@@ -1625,6 +1612,27 @@ components:
       type: string
       minLength: 1
       example: "d773cd4dc21975c3f3fec70bcf6e4b43463ce7c53050681f106790036cc6d8be"
+    TransactionStatus:
+      description: "The status of the transaction"
+      type: string
+      minLength: 1
+      example: "Success"
+    TransactionSender:
+      description: "The display name of the sender"
+      type: string
+      example: "Tony Stark"
+    TransactionReceiver:
+      description: "The display name of the recepient"
+      type: string
+      example: "Thanos"
+    TransactionConcept:
+      description: "General notion of the transaction"
+      type: string
+      example: I am Iron Man
+    TransactionData:
+      description: "Extra data appended to the transaction"
+      type: string
+      example: '{"infinity": "maybe"}'
     ErrorResponse:
       type: object
       properties:
