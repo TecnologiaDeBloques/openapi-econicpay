@@ -611,7 +611,6 @@ paths:
           $ref: "#/components/responses/TooManyRequests"
         "500":
           $ref: "#/components/responses/ServerError"
-
     post:
       tags:
         - Payment Requests
@@ -925,6 +924,161 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/financial_integrations/currency/{currency_symbol}":
+    parameters:
+      - $ref: "#/components/parameters/currencySymbol"
+    get:
+      tags:
+        - Financial Integrations
+      summary: List financial integrations
+      description: Return a list of all a list of your external accounts sorted chronologicaly by creation date.
+      operationId: listFinancialIntegrations
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/financial_integrations/":
+    post:
+      tags:
+        - Financial Integrations
+      summary: Create a financial integration
+      description: Creates a new financial integration
+      operationId: createFinancialIntegration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFinancialIntegrationRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/financial_integrations/{id}":
+    parameters:
+      - $ref: "#/components/parameters/id"
+    get:
+      tags:
+        - Financial Integrations
+      summary: Get a financial integration
+      description: Retrieve a financial integration from its ID
+      operationId: getFinancialIntegration
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    put:
+      tags:
+        - Financial Integrations
+      summary: Update a financial integration
+      description: Update an existing financial integration
+      operationId: updateFinancialIntegration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFinancialIntegrationRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      tags:
+        - Financial Integrations
+      summary: Delete a financial integration
+      description: Delete an existing financial integration
+      operationId: deleteFinancialIntegration
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialIntegration"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -1260,6 +1414,19 @@ components:
           $ref: "#/components/schemas/FinancialIntegrationFunding"
         withdrawal:
           $ref: "#/components/schemas/FinancialIntegrationWithdraw"
+    CreateFinancialIntegrationRequest:
+      type: object
+      properties:
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        name:
+          $ref: "#/components/schemas/FinancialIntegrationName"
+        account_limit:
+          $ref: "#/components/schemas/FinancialIntegrationLimit"
+        funding:
+          $ref: "#/components/schemas/FinancialIntegrationFunding"
+        withdrawal:
+          $ref: "#/components/schemas/FinancialIntegrationWithdraw"
     ExternalAccount:
       type: object
       properties:
@@ -1529,6 +1696,13 @@ components:
       name: external_address
       in: path
       description: "The address of the external account for which the operation will be applied"
+      required: true
+      schema:
+        type: string
+    currencySymbol:
+      name: currency_symbol
+      in: path
+      description: "Symbol of the currency for which the operation will be applied"
       required: true
       schema:
         type: string
