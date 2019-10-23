@@ -885,13 +885,18 @@ paths:
       summary: Update an external account
       description: Update an external account
       operationId: updateExternalAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateExternalAccountRequest"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UpdateExternalAccountRequest"
+                $ref: "#/components/schemas/ExternalAccount"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -916,6 +921,10 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalAccount"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -1260,27 +1269,40 @@ components:
           $ref: "#/components/schemas/ProfileID"
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
-        integration_id:
+        financial_integration_id:
           $ref: "#/components/schemas/FinancialIntegrationID"
-        linked_cacao_account:
+        cacao_account_address:
           $ref: "#/components/schemas/Address"
+        accountName:
+          $ref: "#/components/schemas/AccountName"
         data:
           description: "A valid JSON object that may contain extra data"
           type: string
           example: '"{"CLABE":"03218000011835971"}'
-
     CreateExternalAccountRequest:
       type: object
       properties:
-        address:
-          description: Unique SHA3-256 address
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        financial_integration_id:
+          $ref: "#/components/schemas/FinancialIntegrationID"
+        cacao_account_address:
+          $ref: "#/components/schemas/Address"
+        accountName:
+          $ref: "#/components/schemas/AccountName"
+        data:
+          description: "A valid JSON object that may contain extra data"
           type: string
+          example: '"{"CLABE":"03218000011835971"}'
     UpdateExternalAccountRequest:
       type: object
       properties:
-        address:
-          description: Unique SHA3-256 address
+        accountName:
+          $ref: "#/components/schemas/AccountName"
+        data:
+          description: "A valid JSON object that may contain extra data"
           type: string
+          example: '"{"CLABE":"03218000011835971"}'
     Address:
       description: Unique identifier of an account to which monetary transactions are delivered.
       type: string
