@@ -226,11 +226,6 @@ paths:
       summary: Delete a Cacao account
       description: Delete an empty Cacao account. The account must be empty before it can be deleted.
       operationId: deleteCacaoAccount
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateCacaoAccountRequest"
       responses:
         "200":
           description: OK
@@ -249,161 +244,161 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/authorizeOperator/":
-    parameters:
-      - $ref: "#/components/parameters/accountAddress"
-    post:
-      tags:
-        - Cacao Accounts
-      summary: Authorize an account Operator
-      description:
-        Authorize a profile with either `read-only` or `full-access` permissions to a Cacao Account.
-        Note that with `read-only` permissions, the profile will be able to see the balance and the full transaction history of the account.
-        Giving `full-access` permissions will allow the profile to `transfer`, `fund`, `withdraw`, `setAllowance`, `authorizeOperators`
-        and `revokeOperators` for the authorized Cacao Account. You can change the permission level with a subsequent call,
-        as the account will always have the last permission that was assigned.
-      operationId: authorizeOperator
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AuthorizeOperatorRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AuthorizeOperatorResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "402":
-          $ref: "#/components/responses/RequestFailed"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "409":
-          $ref: "#/components/responses/Conflict"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
-        "500":
-          $ref: "#/components/responses/ServerError"
+  # "/cacao_accounts/{account_address}/authorizeOperator/":
+  #   parameters:
+  #     - $ref: "#/components/parameters/accountAddress"
+  #   post:
+  #     tags:
+  #       - Cacao Accounts
+  #     summary: Authorize an account Operator
+  #     description:
+  #       Authorize a profile with either `read-only` or `full-access` permissions to a Cacao Account.
+  #       Note that with `read-only` permissions, the profile will be able to see the balance and the full transaction history of the account.
+  #       Giving `full-access` permissions will allow the profile to `transfer`, `fund`, `withdraw`, `setAllowance`, `authorizeOperators`
+  #       and `revokeOperators` for the authorized Cacao Account. You can change the permission level with a subsequent call,
+  #       as the account will always have the last permission that was assigned.
+  #     operationId: authorizeOperator
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/AuthorizeOperatorRequest"
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/AuthorizeOperatorResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "402":
+  #         $ref: "#/components/responses/RequestFailed"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "409":
+  #         $ref: "#/components/responses/Conflict"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/revokeOperator/":
-    parameters:
-      - $ref: "#/components/parameters/accountAddress"
-    post:
-      tags:
-        - Cacao Accounts
-      summary: Revoke an account Operator
-      description:
-        Revoke permissions asigned to a Profile for a Cacao Account. By revoking its permissions, the profile
-        will have zero permissions for the account. If you wish to lower the permission level of an account you
-        need to use the `authorizeOperator` endpoint.
-      operationId: revokeOperator
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RevokeOperatorRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RevokeOperatorResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "402":
-          $ref: "#/components/responses/RequestFailed"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "409":
-          $ref: "#/components/responses/Conflict"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
-        "500":
-          $ref: "#/components/responses/ServerError"
+  # "/cacao_accounts/{account_address}/revokeOperator/":
+  #   parameters:
+  #     - $ref: "#/components/parameters/accountAddress"
+  #   post:
+  #     tags:
+  #       - Cacao Accounts
+  #     summary: Revoke an account Operator
+  #     description:
+  #       Revoke permissions asigned to a Profile for a Cacao Account. By revoking its permissions, the profile
+  #       will have zero permissions for the account. If you wish to lower the permission level of an account you
+  #       need to use the `authorizeOperator` endpoint.
+  #     operationId: revokeOperator
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/RevokeOperatorRequest"
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/RevokeOperatorResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "402":
+  #         $ref: "#/components/responses/RequestFailed"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "409":
+  #         $ref: "#/components/responses/Conflict"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/setAllowance/":
-    parameters:
-      - $ref: "#/components/parameters/accountAddress"
-    post:
-      tags:
-        - Cacao Accounts
-      summary: Set allowance for a Cacao account
-      description:
-        Gives the ability to withdraw a determined balance from this account to another Cacao account without further authorization from the "allower".
-        Subsecuent calls will set the allowance limit to the provided amount instead of incrementing the current allowance with the amount.
-      operationId: setAllowance
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SetAllowanceRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SetAllowanceResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "402":
-          $ref: "#/components/responses/RequestFailed"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "409":
-          $ref: "#/components/responses/Conflict"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
-        "500":
-          $ref: "#/components/responses/ServerError"
+  # "/cacao_accounts/{account_address}/setAllowance/":
+  #   parameters:
+  #     - $ref: "#/components/parameters/accountAddress"
+  #   post:
+  #     tags:
+  #       - Cacao Accounts
+  #     summary: Set allowance for a Cacao account
+  #     description:
+  #       Gives the ability to withdraw a determined balance from this account to another Cacao account without further authorization from the "allower".
+  #       Subsecuent calls will set the allowance limit to the provided amount instead of incrementing the current allowance with the amount.
+  #     operationId: setAllowance
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/SetAllowanceRequest"
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/SetAllowanceResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "402":
+  #         $ref: "#/components/responses/RequestFailed"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "409":
+  #         $ref: "#/components/responses/Conflict"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/checkAllowance/":
-    parameters:
-      - $ref: "#/components/parameters/accountAddress"
-    post:
-      tags:
-        - Cacao Accounts
-      summary: Check allowance for a Cacao account
-      description: Returns the allowance a Cacao account has from another Cacao account.
-      operationId: checkAllowance
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CheckAllowanceRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CheckAllowanceResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "402":
-          $ref: "#/components/responses/RequestFailed"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
-        "500":
-          $ref: "#/components/responses/ServerError"
+  # "/cacao_accounts/{account_address}/checkAllowance/":
+  #   parameters:
+  #     - $ref: "#/components/parameters/accountAddress"
+  #   post:
+  #     tags:
+  #       - Cacao Accounts
+  #     summary: Check allowance for a Cacao account
+  #     description: Returns the allowance a Cacao account has from another Cacao account.
+  #     operationId: checkAllowance
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/CheckAllowanceRequest"
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/CheckAllowanceResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "402":
+  #         $ref: "#/components/responses/RequestFailed"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/ServerError"
 
   "/cacao_accounts/{account_address}/transfer/":
     parameters:
@@ -418,7 +413,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TransferRequest"
+              $ref: "#/components/schemas/CreateTransactionRequest"
         required: true
       responses:
         "200":
@@ -426,7 +421,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransferResponse"
+                $ref: "#/components/schemas/Transaction"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -1132,7 +1127,7 @@ components:
           $ref: "#/components/schemas/CurrencySymbol"
         currency_name:
           $ref: "#/components/schemas/CurrencyName"
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountName"
         balance:
           $ref: "#/components/schemas/Balance"
@@ -1145,7 +1140,7 @@ components:
           $ref: "#/components/schemas/CurrencySymbol"
         balance:
           $ref: "#/components/schemas/BalanceZero"
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountNameEmergency"
     CreateCacaoAccountRequest:
       type: object
@@ -1170,7 +1165,7 @@ components:
     UpdateCacaoAccountRequest:
       type: object
       properties:
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountNameEmergency"
     DeleteCacaoAccountRequest:
       type: object
@@ -1256,14 +1251,14 @@ components:
           $ref: "#/components/schemas/TransactionConcept"
         data:
           $ref: "#/components/schemas/TransactionData"
-    TransferRequest:
+    CreateTransactionRequest:
       type: object
       properties:
-        receiver:
-          $ref: "#/components/schemas/TransactionReceiver"
+        receiver_profile_id:
+          $ref: "#/components/schemas/TransactionReceiverProfileID"
         to:
           $ref: "#/components/schemas/Address"
-        currency:
+        currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
         amount:
           $ref: "#/components/schemas/Amount"
@@ -1273,31 +1268,6 @@ components:
           $ref: "#/components/schemas/Data"
         anonymous:
           $ref: "#/components/schemas/Anonymous"
-    TransferResponse:
-      type: object
-      properties:
-        transaction_id:
-          $ref: "#/components/schemas/TransactionID"
-        status:
-          $ref: "#/components/schemas/TransactionStatus"
-        sender:
-          $ref: "#/components/schemas/TransactionSender"
-        receiver:
-          $ref: "#/components/schemas/TransactionReceiver"
-        from:
-          $ref: "#/components/schemas/Address"
-        to:
-          $ref: "#/components/schemas/Address"
-        currency:
-          $ref: "#/components/schemas/CurrencySymbol"
-        amount:
-          $ref: "#/components/schemas/Amount"
-        fee:
-          $ref: "#/components/schemas/Fee"
-        concept:
-          $ref: "#/components/schemas/TransactionConcept"
-        data:
-          $ref: "#/components/schemas/Data"
     FundRequest:
       type: object
       properties:
@@ -1538,10 +1508,10 @@ components:
       type: string
       example: '{ sender: "tecdebloques"}'
     ProfileID:
-      description: "Profile identifier"
+      description: "Profile unique identifier"
       type: string
       minLength: 1
-      example: "tecdebloques"
+      example: "0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe"
     Permissions:
       description: "The authorization level, can be `read-only` or `full-access`."
       type: string
@@ -1633,6 +1603,10 @@ components:
       description: "Extra data appended to the transaction"
       type: string
       example: '{"infinity": "maybe"}'
+    TransactionReceiverProfileID:
+      description: "Profile unique identifier of the transaction recepient"
+      type: string
+      example: "0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe"
     ErrorResponse:
       type: object
       properties:
