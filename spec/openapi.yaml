@@ -244,6 +244,41 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
+  "/cacao_accounts/find/":
+    post:
+      tags:
+        - Cacao Accounts
+      summary: Find a Cacao Account Details
+      description: Find a Cacao Account Address for a certain currency from a profile by using his Email or his Phone number.
+      operationId: cacaoAccountFind
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FindCacaoAccountDetailsRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindCacaoAccountDetailsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
   # "/cacao_accounts/{account_address}/authorizeOperator/":
   #   parameters:
   #     - $ref: "#/components/parameters/accountAddress"
@@ -1172,6 +1207,37 @@ components:
       properties:
         accountName:
           $ref: "#/components/schemas/AccountName"
+    FindCacaoAccountDetailsRequest:
+      type: object
+      properties:
+        profile_email:
+          description: Publicly displayed email of the profile
+          type: string
+          format: email
+          example: "ironman@avengers.com"
+        phone_number:
+          description: Public phone number of the profile.
+          type: string
+          example: "5555555555"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+    FindCacaoAccountDetailsResponse:
+      type: object
+      properties:
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        display_name:
+          description: Publicly displayed name of the profile.
+          type: string
+          minLength: 1
+          example: "Anthony Stark"
+        avatar:
+          description: Publicly displayed avatar of the profile.
+          type: string
+          minLength: 1
+          example: "ajolotle"
+        address:
+          $ref: "#/components/schemas/Address"
     AuthorizeOperatorRequest:
       type: object
       properties:
