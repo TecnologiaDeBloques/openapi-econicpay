@@ -548,37 +548,6 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/transactions/":
-    get:
-      tags:
-        - Cacao Accounts
-      summary: List account transactions
-      description: Returns a list of all your account transactions sorted chronologicaly by creation date.
-      operationId: listAccountTransactions
-      parameters:
-        - $ref: "#/components/parameters/accountAddress"
-        - $ref: "#/components/parameters/limit"
-        - $ref: "#/components/parameters/offset"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Transaction"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "402":
-          $ref: "#/components/responses/RequestFailed"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
-        "500":
-          $ref: "#/components/responses/ServerError"
-
   "/transactions/":
     parameters:
       - $ref: "#/components/parameters/queryTransactionCurrencySymbol"
