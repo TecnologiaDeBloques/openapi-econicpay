@@ -579,6 +579,40 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
+  "/transactions/":
+    parameters:
+      - $ref: "#/components/parameters/queryTransactionCurrencySymbol"
+      - $ref: "#/components/parameters/queryTransactionProfileID"
+      - $ref: "#/components/parameters/queryTransactionAccountAddress"
+    get:
+      tags:
+        - Transactions
+      summary: List transactions
+      description: Retrieve a list of transactions utilizing the Currency Symbol,
+                   the Profile ID or the Cacao Account Address
+      operationId: listTransactions
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
   "/transactions/{transaction_id}":
     parameters:
       - $ref: "#/components/parameters/transactionID"
@@ -1299,13 +1333,13 @@ components:
           $ref: "#/components/schemas/TransactionID"
         status:
           $ref: "#/components/schemas/TransactionStatus"
-        sender:
+        sender_name:
           $ref: "#/components/schemas/TransactionSender"
-        receiver:
+        receiver_name:
           $ref: "#/components/schemas/TransactionReceiver"
-        from:
+        address_from:
           $ref: "#/components/schemas/Address"
-        to:
+        address_to:
           $ref: "#/components/schemas/Address"
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
@@ -1317,12 +1351,17 @@ components:
           $ref: "#/components/schemas/TransactionConcept"
         data:
           $ref: "#/components/schemas/TransactionData"
+        date:
+          description: The date of the transaction.
+          type: string
+          format: date
+          minLength: 1
     CreateTransactionRequest:
       type: object
       properties:
         receiver_profile_id:
           $ref: "#/components/schemas/TransactionReceiverProfileID"
-        to:
+        address_to:
           $ref: "#/components/schemas/Address"
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
@@ -1780,6 +1819,24 @@ components:
       in: query
       description: "The account address of the payment requester"
       required: true
+      schema:
+        type: string
+    queryTransactionCurrencySymbol:
+      name: currency
+      in: query
+      description: "The currency symbol of the transaction"
+      schema:
+        type: string
+    queryTransactionProfileID:
+      name: profile
+      in: query
+      description: "The profile ID of the sender or recepient of the transaction"
+      schema:
+        type: string
+    queryTransactionAccountAddress:
+      name: account
+      in: query
+      description: "The account address of the sender or recepient of the transaction"
       schema:
         type: string
     email:
