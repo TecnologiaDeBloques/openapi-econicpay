@@ -1156,7 +1156,7 @@ components:
           $ref: "#/components/schemas/CurrencySymbol"
         balance:
           $ref: "#/components/schemas/Balance"
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountName"
     CacaoAccount:
       type: object
@@ -1202,7 +1202,7 @@ components:
           $ref: "#/components/schemas/CurrencySymbol"
         balance:
           $ref: "#/components/schemas/BalanceZero"
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountName"
     UpdateCacaoAccountRequest:
       type: object
@@ -1212,7 +1212,7 @@ components:
     DeleteCacaoAccountRequest:
       type: object
       properties:
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountName"
     FindCacaoAccountDetailsRequest:
       type: object
@@ -1488,7 +1488,7 @@ components:
           $ref: "#/components/schemas/FinancialIntegrationID"
         cacao_account_address:
           $ref: "#/components/schemas/Address"
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountName"
         data:
           description: "A valid JSON object that may contain extra data"
@@ -1503,7 +1503,7 @@ components:
           $ref: "#/components/schemas/FinancialIntegrationID"
         cacao_account_address:
           $ref: "#/components/schemas/Address"
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountName"
         data:
           description: "A valid JSON object that may contain extra data"
@@ -1512,7 +1512,7 @@ components:
     UpdateExternalAccountRequest:
       type: object
       properties:
-        accountName:
+        account_name:
           $ref: "#/components/schemas/AccountName"
         data:
           description: "A valid JSON object that may contain extra data"
