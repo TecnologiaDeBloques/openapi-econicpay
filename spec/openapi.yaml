@@ -1332,10 +1332,14 @@ components:
     CreateTransactionRequest:
       type: object
       properties:
-        receiver_profile_id:
-          $ref: "#/components/schemas/TransactionReceiverProfileID"
-        address_to:
-          $ref: "#/components/schemas/Address"
+        receiver_profiles_id:
+          type: array
+          items:
+            $ref: "#/components/schemas/TransactionReceiverProfileID"
+        addresses_to:
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
         amount:
