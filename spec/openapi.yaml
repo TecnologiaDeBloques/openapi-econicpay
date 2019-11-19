@@ -1464,6 +1464,10 @@ components:
           $ref: "#/components/schemas/CurrencySymbol"
         name:
           $ref: "#/components/schemas/FinancialIntegrationName"
+        format:
+          type: string
+          description: Helper for identifier what UI should be displayed in graphic interfaces
+          example: credit_card_form
         account_limit:
           $ref: "#/components/schemas/FinancialIntegrationLimit"
         funding:
