@@ -1379,8 +1379,6 @@ components:
       properties:
         external_account:
           $ref: "#/components/schemas/Address"
-        currency:
-          $ref: "#/components/schemas/CurrencySymbol"
         amount:
           $ref: "#/components/schemas/Amount"
     WithdrawResponse:
@@ -1472,6 +1470,10 @@ components:
           $ref: "#/components/schemas/FinancialIntegrationFunding"
         withdrawal:
           $ref: "#/components/schemas/FinancialIntegrationWithdraw"
+        funding_fee:
+          $ref: "#/components/schemas/Fee"
+        withdraw_fee:
+          $ref: "#/components/schemas/Fee"
     CreateFinancialIntegrationRequest:
       type: object
       properties:
@@ -1485,6 +1487,10 @@ components:
           $ref: "#/components/schemas/FinancialIntegrationFunding"
         withdrawal:
           $ref: "#/components/schemas/FinancialIntegrationWithdraw"
+        funding_fee:
+          $ref: "#/components/schemas/Fee"
+        withdraw_fee:
+          $ref: "#/components/schemas/Fee"
     ExternalAccount:
       type: object
       properties:
