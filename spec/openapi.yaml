@@ -534,7 +534,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WithdrawResponse"
+                $ref: "#/components/schemas/Transaction"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
