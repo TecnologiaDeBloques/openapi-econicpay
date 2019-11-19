@@ -456,7 +456,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transaction"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -660,7 +662,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaymentRequest"
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentRequest"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -1419,8 +1423,10 @@ components:
           $ref: "#/components/schemas/PaymentRequestRequestor"
         requestor_address:
           $ref: "#/components/schemas/PaymentRequestRequestorAddress"
-        requestee_profile_id:
-          $ref: "#/components/schemas/PaymentRequestRequestee"
+        requestees_profile_id:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentRequestRequestee"
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
         amount:
