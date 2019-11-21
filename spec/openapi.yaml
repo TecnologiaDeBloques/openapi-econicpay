@@ -474,10 +474,9 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/fund/{external_address}":
+  "/cacao_accounts/{account_address}/fund/":
     parameters:
       - $ref: "#/components/parameters/accountAddress"
-      - $ref: "#/components/parameters/externalAddress"
     post:
       tags:
         - Cacao Accounts
@@ -512,10 +511,9 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/withdraw/{external_address}":
+  "/cacao_accounts/{account_address}/withdraw/":
     parameters:
       - $ref: "#/components/parameters/accountAddress"
-      - $ref: "#/components/parameters/externalAddress"
     post:
       tags:
         - Cacao Accounts
