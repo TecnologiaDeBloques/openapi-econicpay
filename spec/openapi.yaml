@@ -824,15 +824,17 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/external_accounts/currency/{currency_symbol}":
+  "/external_accounts/query":
     parameters:
-      - $ref: "#/components/parameters/currencySymbol"
+      - $ref: "#/components/parameters/currencySymbolQuery"
+      - $ref: "#/components/parameters/accountAddressQuery"
+      - $ref: "#/components/parameters/financialIDQuery"
     get:
       tags:
         - External Accounts
-      summary: List external accounts
-      description: Returns a list of your external accounts sorted chronologicaly by creation date.
-      operationId: listExternalAccounts
+      summary: Query external accounts
+      description: Returns a list of your external accounts filtered by a parameter.
+      operationId: queryExternalAccounts
       parameters:
         - $ref: "#/components/parameters/limit"
         - $ref: "#/components/parameters/offset"
@@ -1772,10 +1774,24 @@ components:
       required: true
       schema:
         type: string
+    accountAddressQuery:
+      name: account_address
+      in: query
+      description: "The address of the cacao account for which the operation will filter"
+      required: false
+      schema:
+        type: string
+    financialIDQuery:
+      name: financial_integration_id
+      in: query
+      description: "The ID of the financial integration for which the operation will filter"
+      required: false
+      schema:
+        type: string
     externalAddress:
       name: external_address
       in: path
-      description: "The address of the external account for which the operation will be applied"
+      description: "The address of the external account for which the operation will filter"
       required: true
       schema:
         type: string
@@ -1784,6 +1800,13 @@ components:
       in: path
       description: "Symbol of the currency for which the operation will be applied"
       required: true
+      schema:
+        type: string
+    currencySymbolQuery:
+      name: currency_symbol
+      in: query
+      description: "Symbol of the currency for which the operation will filter"
+      required: false
       schema:
         type: string
     transactionID:
