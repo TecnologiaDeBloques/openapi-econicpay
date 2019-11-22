@@ -552,6 +552,8 @@ paths:
     parameters:
       - $ref: "#/components/parameters/queryTransactionCurrencySymbol"
       - $ref: "#/components/parameters/queryTransactionProfileID"
+      - $ref: "#/components/parameters/queryTransactionSenderProfileID"
+      - $ref: "#/components/parameters/queryTransactionReceiverProfileID"
       - $ref: "#/components/parameters/queryTransactionAccountAddress"
       - $ref: "#/components/parameters/queryTransactionAccountFromAddress"
       - $ref: "#/components/parameters/queryTransactionAccountToAddress"
@@ -1846,7 +1848,19 @@ components:
     queryTransactionProfileID:
       name: profile
       in: query
-      description: "The profile ID of the sender or recepient of the transaction"
+      description: "The profile ID of the sender or recepient of the transactions"
+      schema:
+        type: string
+    queryTransactionSenderProfileID:
+      name: sender_profile
+      in: query
+      description: "The profile ID of the sender of the transactions"
+      schema:
+        type: string
+    queryTransactionReceiverProfileID:
+      name: receiver_profile
+      in: query
+      description: "The profile ID of the recepient of the transactions"
       schema:
         type: string
     queryTransactionAccountAddress:
