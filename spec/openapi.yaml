@@ -553,6 +553,8 @@ paths:
       - $ref: "#/components/parameters/queryTransactionCurrencySymbol"
       - $ref: "#/components/parameters/queryTransactionProfileID"
       - $ref: "#/components/parameters/queryTransactionAccountAddress"
+      - $ref: "#/components/parameters/queryTransactionAccountFromAddress"
+      - $ref: "#/components/parameters/queryTransactionAccountToAddress"
     get:
       tags:
         - Transactions
@@ -1851,6 +1853,18 @@ components:
       name: account
       in: query
       description: "The account address of the sender or recepient of the transaction"
+      schema:
+        type: string
+    queryTransactionAccountFromAddress:
+      name: account_from
+      in: query
+      description: "The account address of the sender of the transaction"
+      schema:
+        type: string
+    queryTransactionAccountToAddress:
+      name: account_to
+      in: query
+      description: "The account address of the recepient of the transaction"
       schema:
         type: string
     email:
