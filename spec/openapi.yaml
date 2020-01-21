@@ -42,10 +42,10 @@ tags:
     description: |
       A digital asset that can be used as a medium of exchange.
       <SchemaDefinition schemaRef="#/components/schemas/Currency" />
-  - name: Cacao Account
+  - name: Internal Account
     description: |
-      Cacao Accounts store a certain currency and can transfer their balance to other Cacao and External accounts that utilize the same currency. 
-      <SchemaDefinition schemaRef="#/components/schemas/CacaoAccount" />
+      Internal Accounts store a certain currency and can transfer their balance to other Cacao and External accounts that utilize the same currency. 
+      <SchemaDefinition schemaRef="#/components/schemas/InternalAccount" />
   - name: Transaction
     description: |
       Transactions represent all monetary transfers of value from a Cacao Account 
@@ -56,7 +56,7 @@ tags:
       <SchemaDefinition schemaRef="#/components/schemas/FinancialIntegration" />
   - name: External Account
     description: |
-      External Accounts are third party integrations such as banking accounts or debit cards that can be used by Cacao Accounts for funding or withdrawing from a certain currency.
+      External Accounts are third party integrations such as banking accounts or debit cards that can be used by Internal Accounts for funding or withdrawing from a certain currency.
       <SchemaDefinition schemaRef="#/components/schemas/ExternalAccount" />
   - name: Payment Request
     description: |
@@ -70,7 +70,7 @@ x-tagGroups:
   - name: "Resource Models"
     tags:
       - Currency
-      - Cacao Account
+      - Internal Account
       - Transaction
       - Financial Integration
       - External Account
@@ -82,7 +82,7 @@ x-tagGroups:
       - Financial Integrations
   - name: "Accounts"
     tags:
-      - Cacao Accounts
+      - Internal Accounts
       - External Accounts
   - name: "Payments & Transactions"
     tags:
@@ -98,13 +98,13 @@ servers:
   - url: "https://production.example.com/api/v1"
     description: Production environment
 paths:
-  "/cacao_accounts/":
+  "/internal_accounts/":
     get:
       tags:
-        - Cacao Accounts
-      summary: List Cacao accounts
-      description: Returns a list of all your Cacao accounts sorted chronologicaly by creation date.
-      operationId: listCacaoAccounts
+        - Internal Accounts
+      summary: List Internal accounts
+      description: Returns a list of all your Internal accounts sorted chronologicaly by creation date.
+      operationId: listInternalAccounts
       parameters:
         - $ref: "#/components/parameters/limit"
         - $ref: "#/components/parameters/offset"
@@ -116,7 +116,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/CacaoAccount"
+                  $ref: "#/components/schemas/InternalAccount"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -130,15 +130,15 @@ paths:
 
     post:
       tags:
-        - Cacao Accounts
-      summary: Create a Cacao account
-      description: Creates a new Cacao account
-      operationId: createCacaoAccount
+        - Internal Accounts
+      summary: Create a Internal account
+      description: Creates a new Internal account
+      operationId: createInternalAccount
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateCacaoAccountRequest"
+              $ref: "#/components/schemas/CreateInternalAccountRequest"
         required: true
       responses:
         "200":
@@ -146,7 +146,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateCacaoAccountResponse"
+                $ref: "#/components/schemas/CreateInternalAccountResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -158,22 +158,22 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}":
+  "/internal_accounts/{account_address}":
     parameters:
       - $ref: "#/components/parameters/accountAddress"
     get:
       tags:
-        - Cacao Accounts
-      summary: Get a Cacao account.
-      description: Retrieve an existing Cacao account by it's address.
-      operationId: getCacaoAccount
+        - Internal Accounts
+      summary: Get a Internal account.
+      description: Retrieve an existing Internal account by it's address.
+      operationId: getInternalAccount
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CacaoAccount"
+                $ref: "#/components/schemas/InternalAccount"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -188,15 +188,15 @@ paths:
           $ref: "#/components/responses/ServerError"
     put:
       tags:
-        - Cacao Accounts
-      summary: Update a Cacao account
-      description: Update an existing Cacao account
-      operationId: updateCacaoAccount
+        - Internal Accounts
+      summary: Update a Internal account
+      description: Update an existing Internal account
+      operationId: updateInternalAccount
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateCacaoAccountRequest"
+              $ref: "#/components/schemas/UpdateInternalAccountRequest"
         required: true
       responses:
         "200":
@@ -204,7 +204,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CacaoAccountAlt"
+                $ref: "#/components/schemas/InternalAccountAlt"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -222,10 +222,10 @@ paths:
 
     delete:
       tags:
-        - Cacao Accounts
-      summary: Delete a Cacao account
-      description: Delete an empty Cacao account. The account must be empty before it can be deleted.
-      operationId: deleteCacaoAccount
+        - Internal Accounts
+      summary: Delete a Internal account
+      description: Delete an empty Internal account. The account must be empty before it can be deleted.
+      operationId: deleteInternalAccount
       responses:
         "200":
           description: OK
@@ -244,10 +244,10 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/find/":
+  "/internal_accounts/find/":
     post:
       tags:
-        - Cacao Accounts
+        - Internal Accounts
       summary: Find a Cacao Account Details
       description: Find a Cacao Account Address for a certain currency from a profile by using his Email or his Phone number.
       operationId: cacaoAccountFind
@@ -255,7 +255,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FindCacaoAccountDetailsRequest"
+              $ref: "#/components/schemas/FindInternalAccountDetailsRequest"
         required: true
       responses:
         "200":
@@ -263,7 +263,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FindCacaoAccountDetailsResponse"
+                $ref: "#/components/schemas/FindInternalAccountDetailsResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
         "401":
@@ -279,12 +279,12 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  # "/cacao_accounts/{account_address}/authorizeOperator/":
+  # "/internal_accounts/{account_address}/authorizeOperator/":
   #   parameters:
   #     - $ref: "#/components/parameters/accountAddress"
   #   post:
   #     tags:
-  #       - Cacao Accounts
+  #       - Internal Accounts
   #     summary: Authorize an account Operator
   #     description:
   #       Authorize a profile with either `read-only` or `full-access` permissions to a Cacao Account.
@@ -321,12 +321,12 @@ paths:
   #       "500":
   #         $ref: "#/components/responses/ServerError"
 
-  # "/cacao_accounts/{account_address}/revokeOperator/":
+  # "/internal_accounts/{account_address}/revokeOperator/":
   #   parameters:
   #     - $ref: "#/components/parameters/accountAddress"
   #   post:
   #     tags:
-  #       - Cacao Accounts
+  #       - Internal Accounts
   #     summary: Revoke an account Operator
   #     description:
   #       Revoke permissions asigned to a Profile for a Cacao Account. By revoking its permissions, the profile
@@ -361,15 +361,15 @@ paths:
   #       "500":
   #         $ref: "#/components/responses/ServerError"
 
-  # "/cacao_accounts/{account_address}/setAllowance/":
+  # "/internal_accounts/{account_address}/setAllowance/":
   #   parameters:
   #     - $ref: "#/components/parameters/accountAddress"
   #   post:
   #     tags:
-  #       - Cacao Accounts
-  #     summary: Set allowance for a Cacao account
+  #       - Internal Accounts
+  #     summary: Set allowance for a Internal account
   #     description:
-  #       Gives the ability to withdraw a determined balance from this account to another Cacao account without further authorization from the "allower".
+  #       Gives the ability to withdraw a determined balance from this account to another Internal account without further authorization from the "allower".
   #       Subsecuent calls will set the allowance limit to the provided amount instead of incrementing the current allowance with the amount.
   #     operationId: setAllowance
   #     requestBody:
@@ -400,14 +400,14 @@ paths:
   #       "500":
   #         $ref: "#/components/responses/ServerError"
 
-  # "/cacao_accounts/{account_address}/checkAllowance/":
+  # "/internal_accounts/{account_address}/checkAllowance/":
   #   parameters:
   #     - $ref: "#/components/parameters/accountAddress"
   #   post:
   #     tags:
-  #       - Cacao Accounts
-  #     summary: Check allowance for a Cacao account
-  #     description: Returns the allowance a Cacao account has from another Cacao account.
+  #       - Internal Accounts
+  #     summary: Check allowance for a Internal account
+  #     description: Returns the allowance a Internal account has from another Internal account.
   #     operationId: checkAllowance
   #     requestBody:
   #       content:
@@ -435,14 +435,14 @@ paths:
   #       "500":
   #         $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/transfer/":
+  "/internal_accounts/{account_address}/transfer/":
     parameters:
       - $ref: "#/components/parameters/accountAddress"
     post:
       tags:
-        - Cacao Accounts
-      summary: Transfer from a Cacao account
-      description: Transfer from a Cacao account to another Cacao account. Both accounts must share the same currency.
+        - Internal Accounts
+      summary: Transfer from a Internal account
+      description: Transfer from a Internal account to another Internal account. Both accounts must share the same currency.
       operationId: transferFromAccount
       requestBody:
         content:
@@ -474,14 +474,14 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/fund/":
+  "/internal_accounts/{account_address}/fund/":
     parameters:
       - $ref: "#/components/parameters/accountAddress"
     post:
       tags:
-        - Cacao Accounts
-      summary: Fund a Cacao account using an external account
-      description: Add balance to a Cacao account from a external account that has the same currency
+        - Internal Accounts
+      summary: Fund a Internal account using an external account
+      description: Add balance to a Internal account from a external account that has the same currency
       operationId: fundAccount
       requestBody:
         content:
@@ -511,14 +511,14 @@ paths:
         "500":
           $ref: "#/components/responses/ServerError"
 
-  "/cacao_accounts/{account_address}/withdraw/":
+  "/internal_accounts/{account_address}/withdraw/":
     parameters:
       - $ref: "#/components/parameters/accountAddress"
     post:
       tags:
-        - Cacao Accounts
-      summary: Withdraw from a Cacao account to an external account
-      description: Withdraw balance from a Cacao account to a external account.
+        - Internal Accounts
+      summary: Withdraw from a Internal account to an external account
+      description: Withdraw balance from a Internal account to a external account.
       operationId: withdrawFromAccount
       requestBody:
         content:
@@ -561,8 +561,9 @@ paths:
       tags:
         - Transactions
       summary: List transactions
-      description: Retrieve a list of transactions utilizing the Currency Symbol,
-                   the Profile ID or the Cacao Account Address
+      description:
+        Retrieve a list of transactions utilizing the Currency Symbol,
+        the Profile ID or the Cacao Account Address
       operationId: listTransactions
       responses:
         "200":
@@ -767,7 +768,7 @@ paths:
       tags:
         - Prepays
       summary: Create a prepay
-      description: Create a new prepay for a Cacao account
+      description: Create a new prepay for a Internal account
       operationId: createPrepay
       requestBody:
         content:
@@ -898,7 +899,7 @@ paths:
       tags:
         - External Accounts
       summary: Get an external account
-      description: Retrieve a Cacao account
+      description: Retrieve a Internal account
       operationId: getExternalAccount
       responses:
         "200":
@@ -1165,7 +1166,7 @@ components:
           $ref: "#/components/schemas/Balance"
         account_name:
           $ref: "#/components/schemas/AccountName"
-    CacaoAccount:
+    InternalAccount:
       type: object
       properties:
         address:
@@ -1180,7 +1181,7 @@ components:
           $ref: "#/components/schemas/AccountName"
         balance:
           $ref: "#/components/schemas/Balance"
-    CacaoAccountAlt:
+    InternalAccountAlt:
       type: object
       properties:
         address:
@@ -1191,7 +1192,7 @@ components:
           $ref: "#/components/schemas/BalanceZero"
         account_name:
           $ref: "#/components/schemas/AccountNameEmergency"
-    CreateCacaoAccountRequest:
+    CreateInternalAccountRequest:
       type: object
       properties:
         profile_id:
@@ -1200,7 +1201,7 @@ components:
           $ref: "#/components/schemas/CurrencySymbol"
         account_name:
           $ref: "#/components/schemas/AccountName"
-    CreateCacaoAccountResponse:
+    CreateInternalAccountResponse:
       type: object
       properties:
         address:
@@ -1211,31 +1212,31 @@ components:
           $ref: "#/components/schemas/BalanceZero"
         account_name:
           $ref: "#/components/schemas/AccountName"
-    UpdateCacaoAccountRequest:
+    UpdateInternalAccountRequest:
       type: object
       properties:
         account_name:
           $ref: "#/components/schemas/AccountNameEmergency"
-    DeleteCacaoAccountRequest:
+    DeleteInternalAccountRequest:
       type: object
       properties:
         account_name:
           $ref: "#/components/schemas/AccountName"
-    FindCacaoAccountDetailsRequest:
+    FindInternalAccountDetailsRequest:
       type: object
       properties:
-        profile_email:
+        emails:
           description: Publicly displayed email of the profile
-          type: string
+          type: array
           format: email
-          example: "ironman@avengers.com"
-        phone_number:
+          example: [ironman@avengers.com, blackwidow@avengers.com]
+        phone_numbers:
           description: Public phone number of the profile.
-          type: string
-          example: "5555555555"
+          type: array
+          example: [+525555555555, +52666666666]
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
-    FindCacaoAccountDetailsResponse:
+    FindInternalAccountDetailsResponse:
       type: object
       properties:
         profile_id:
@@ -1509,7 +1510,7 @@ components:
           $ref: "#/components/schemas/CurrencySymbol"
         financial_integration_id:
           $ref: "#/components/schemas/FinancialIntegrationID"
-        cacao_account_address:
+        internal_account_address:
           $ref: "#/components/schemas/Address"
         account_name:
           $ref: "#/components/schemas/AccountName"
@@ -1524,7 +1525,7 @@ components:
           $ref: "#/components/schemas/ProfileID"
         financial_integration_id:
           $ref: "#/components/schemas/FinancialIntegrationID"
-        cacao_account_address:
+        internal_account_address:
           $ref: "#/components/schemas/Address"
         account_name:
           $ref: "#/components/schemas/AccountName"
