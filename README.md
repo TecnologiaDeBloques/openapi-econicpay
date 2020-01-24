@@ -1,6 +1,6 @@
 # econicpay OpenAPI REST Specification
 
-[Link](https://tecnologiadebloques.github.io/openapi-econicpay/)
+[Documentation Link](https://tecnologiadebloques.github.io/openapi-econicpay/)
 
 ## Working on specification
 ### Install
