@@ -2,28 +2,28 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Red Cacao API Reference
-  termsOfService: "https://www.monedacacao.com/terminos/"
+  termsOfService: "https://www.econicapp.com/terminos/"
   contact:
-    email: holamundo@monedacacao.com
-    url: "http://www.monedacacao.com/contacto"
+    email: devops@econicpay.com
+    url: "http://www.econicapp.com/contacto"
   license:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
   x-logo:
-    url: "https://storage.googleapis.com/cacao-static-content/logos/red-cacao/cr_logo_green.png"
+    url: "https://storage.googleapis.com/econic-assets/econicpay_logo_white.png"
   description: |
     # Introduction
-    The Red Cacao API is built on HTTP around REST and resource oriented URLs. 
+    The Econic Pay API is built on HTTP around REST and resource oriented URLs. 
     It accepts form-encoded request bodies and returns JSON responses.
     Standard HTTP response codes and verbs are used. 
 
-    You can try the Red Cacao API in its testnet environment, which does 
+    You can try the Econic Pay API in its testnet environment, which does 
     not affect live data, utilize real money or interacts with production banking networks. 
     Each environment has its own accounts and objects, so you will need
-    to create a CacaoID account for the testnet environment.
+    to create a Econic ID account for the testnet environment.
 
     # Authentication
-    Red Cacao offers two forms of authentication:
+    Econic Pay offers two forms of authentication:
       - OAuth2
       - API Key
 
@@ -93,9 +93,9 @@ security:
   - oAuth: []
   - SecretApiKey: []
 servers:
-  - url: "https://testnet.redcacao.com/api/v1/"
-    description: Testing environment
-  - url: "https://production.example.com/api/v1"
+  - url: "https://testnet.econicpay.com/"
+    description: Public testing environment
+  - url: "https://production.econicpay.com/"
     description: Production environment
 paths:
   "/internal_accounts/":
