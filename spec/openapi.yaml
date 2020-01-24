@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Red Cacao API Reference
+  title: Econic Pay API Reference
   termsOfService: "https://www.econicapp.com/terminos/"
   contact:
     email: devops@econicpay.com
