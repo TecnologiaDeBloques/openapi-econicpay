@@ -1,6 +1,6 @@
-# Red Cacao OpenAPI Specification
+# econicpay OpenAPI REST Specification
 
-[Documentation](https://tecnologiadebloques.github.io/openapi-cacaored/)
+[Link](https://tecnologiadebloques.github.io/openapi-econicpay/)
 
 ## Working on specification
 ### Install
