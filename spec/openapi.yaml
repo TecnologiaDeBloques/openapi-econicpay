@@ -48,7 +48,7 @@ tags:
       <SchemaDefinition schemaRef="#/components/schemas/InternalAccount" />
   - name: Transaction
     description: |
-      Transactions represent all monetary transfers of value from a Cacao Account 
+      Transactions represent all monetary transfers of value from a Internal Account 
       <SchemaDefinition schemaRef="#/components/schemas/Transaction" />
   - name: Financial Integration
     description: |
@@ -108,6 +108,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/limit"
         - $ref: "#/components/parameters/offset"
+        - $ref: "#/components/parameters/queryProfileID"
       responses:
         "200":
           description: OK
@@ -248,8 +249,8 @@ paths:
     post:
       tags:
         - Internal Accounts
-      summary: Find a Cacao Account Details
-      description: Find a Cacao Account Address for a certain currency from a profile by using his Email or his Phone number.
+      summary: Find a Internal Account Details
+      description: Find a Internal Account Address for a certain currency from a profile by using his Email or his Phone number.
       operationId: cacaoAccountFind
       requestBody:
         content:
@@ -563,7 +564,7 @@ paths:
       summary: List transactions
       description:
         Retrieve a list of transactions utilizing the Currency Symbol,
-        the Profile ID or the Cacao Account Address
+        the Profile ID or the Internal Account Address
       operationId: listTransactions
       responses:
         "200":
@@ -1361,12 +1362,12 @@ components:
     FundRequest:
       type: object
       properties:
-        external_account:
+        external_account_address:
           $ref: "#/components/schemas/Address"
-        currency:
-          $ref: "#/components/schemas/CurrencySymbol"
         amount:
           $ref: "#/components/schemas/Amount"
+        data:
+          $ref: "#/components/schemas/TransactionData"
     FundResponse:
       type: object
       properties:
@@ -1772,14 +1773,14 @@ components:
     accountAddress:
       name: account_address
       in: path
-      description: "The address of the cacao account for which the operation will be applied"
+      description: "The address of the internal account for which the operation will be applied"
       required: true
       schema:
         type: string
     accountAddressQuery:
       name: account_address
       in: query
-      description: "The address of the cacao account for which the operation will filter"
+      description: "The address of the internal account for which the operation will filter"
       required: false
       schema:
         type: string
@@ -1837,6 +1838,12 @@ components:
       in: query
       description: "The account address of the payment requester"
       required: true
+      schema:
+        type: string
+    queryProfileID:
+      name: profile
+      in: query
+      description: "The profile ID of the owner of the resource"
       schema:
         type: string
     queryTransactionCurrencySymbol:
