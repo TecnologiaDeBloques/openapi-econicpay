@@ -1,0 +1,1939 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Econic Pay API Reference
+  termsOfService: "https://www.econicapp.com/terminos/"
+  contact:
+    email: devops@econicpay.com
+    url: "http://www.econicapp.com/contacto"
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  x-logo:
+    url: "https://storage.googleapis.com/econic-assets/econicpay_logo_white.png"
+  description: |
+    # Introduction
+    The Econic Pay API is built on HTTP around REST and resource oriented URLs. 
+    It accepts form-encoded request bodies and returns JSON responses.
+    Standard HTTP response codes and verbs are used. 
+
+    You can try the Econic Pay API in its testnet environment, which does 
+    not affect live data, utilize real money or interacts with production banking networks. 
+    Each environment has its own accounts and objects, so you will need
+    to create a Econic ID account for the testnet environment.
+
+    # Authentication
+    Econic Pay offers two forms of authentication:
+      - OAuth2
+      - API Key
+
+    # Pagination
+
+    TODO
+
+    # SDKs
+    TODO
+
+    # Getting Started
+    TODO
+
+tags:
+  - name: Currency
+    description: |
+      A digital asset that can be used as a medium of exchange.
+      <SchemaDefinition schemaRef="#/components/schemas/Currency" />
+  - name: Internal Account
+    description: |
+      Internal Accounts store a certain currency and can transfer their balance to other Cacao and External accounts that utilize the same currency. 
+      <SchemaDefinition schemaRef="#/components/schemas/InternalAccount" />
+  - name: Transaction
+    description: |
+      Transactions represent all monetary transfers of value from a Internal Account 
+      <SchemaDefinition schemaRef="#/components/schemas/Transaction" />
+  - name: Financial Integration
+    description: |
+      A Financial Integration is a third party integration that can be used to fund or withdraw a determined currency.
+      <SchemaDefinition schemaRef="#/components/schemas/FinancialIntegration" />
+  - name: External Account
+    description: |
+      External Accounts are third party integrations such as banking accounts or debit cards that can be used by Internal Accounts for funding or withdrawing from a certain currency.
+      <SchemaDefinition schemaRef="#/components/schemas/ExternalAccount" />
+  - name: Payment Request
+    description: |
+      Payment Requests are soliciations for payments that can be fullfilled by the requested party.
+      <SchemaDefinition schemaRef="#/components/schemas/PaymentRequest" />
+  - name: Prepay
+    description: |
+      Prepays are payments done in advance that can be fullfilled by the recipient. (NOT IMPLEMENTED)
+      <SchemaDefinition schemaRef="#/components/schemas/Prepay" />
+x-tagGroups:
+  - name: "Resource Models"
+    tags:
+      - Currency
+      - Internal Account
+      - Transaction
+      - Financial Integration
+      - External Account
+      - Payment Request
+      - Prepay
+  - name: "Currencies and Integrations"
+    tags:
+      - Currencies
+      - Financial Integrations
+  - name: "Accounts"
+    tags:
+      - Internal Accounts
+      - External Accounts
+  - name: "Payments & Transactions"
+    tags:
+      - Transactions
+      - Payment Requests
+      - Prepays
+security:
+  - oAuth: []
+  - SecretApiKey: []
+servers:
+  - url: "https://testnet.econicpay.com/"
+    description: Public testing environment
+  - url: "https://production.econicpay.com/"
+    description: Production environment
+paths:
+  "/internal_accounts/":
+    get:
+      tags:
+        - Internal Accounts
+      summary: List Internal accounts
+      description: Returns a list of all your Internal accounts sorted chronologicaly by creation date.
+      operationId: listInternalAccounts
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+        - $ref: "#/components/parameters/queryProfileID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    post:
+      tags:
+        - Internal Accounts
+      summary: Create a Internal account
+      description: Creates a new Internal account
+      operationId: createInternalAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInternalAccountRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateInternalAccountResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/internal_accounts/{account_address}":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    get:
+      tags:
+        - Internal Accounts
+      summary: Get a Internal account.
+      description: Retrieve an existing Internal account by it's address.
+      operationId: getInternalAccount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    put:
+      tags:
+        - Internal Accounts
+      summary: Update a Internal account
+      description: Update an existing Internal account
+      operationId: updateInternalAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateInternalAccountRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalAccountAlt"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      tags:
+        - Internal Accounts
+      summary: Delete a Internal account
+      description: Delete an empty Internal account. The account must be empty before it can be deleted.
+      operationId: deleteInternalAccount
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/internal_accounts/find/":
+    post:
+      tags:
+        - Internal Accounts
+      summary: Find a Internal Account Details
+      description: Find a Internal Account Address for a certain currency from a profile by using his Email or his Phone number.
+      operationId: cacaoAccountFind
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FindInternalAccountDetailsRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FindInternalAccountDetailsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  # "/internal_accounts/{account_address}/authorizeOperator/":
+  #   parameters:
+  #     - $ref: "#/components/parameters/accountAddress"
+  #   post:
+  #     tags:
+  #       - Internal Accounts
+  #     summary: Authorize an account Operator
+  #     description:
+  #       Authorize a profile with either `read-only` or `full-access` permissions to a Cacao Account.
+  #       Note that with `read-only` permissions, the profile will be able to see the balance and the full transaction history of the account.
+  #       Giving `full-access` permissions will allow the profile to `transfer`, `fund`, `withdraw`, `setAllowance`, `authorizeOperators`
+  #       and `revokeOperators` for the authorized Cacao Account. You can change the permission level with a subsequent call,
+  #       as the account will always have the last permission that was assigned.
+  #     operationId: authorizeOperator
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/AuthorizeOperatorRequest"
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/AuthorizeOperatorResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "402":
+  #         $ref: "#/components/responses/RequestFailed"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "409":
+  #         $ref: "#/components/responses/Conflict"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/ServerError"
+
+  # "/internal_accounts/{account_address}/revokeOperator/":
+  #   parameters:
+  #     - $ref: "#/components/parameters/accountAddress"
+  #   post:
+  #     tags:
+  #       - Internal Accounts
+  #     summary: Revoke an account Operator
+  #     description:
+  #       Revoke permissions asigned to a Profile for a Cacao Account. By revoking its permissions, the profile
+  #       will have zero permissions for the account. If you wish to lower the permission level of an account you
+  #       need to use the `authorizeOperator` endpoint.
+  #     operationId: revokeOperator
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/RevokeOperatorRequest"
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/RevokeOperatorResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "402":
+  #         $ref: "#/components/responses/RequestFailed"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "409":
+  #         $ref: "#/components/responses/Conflict"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/ServerError"
+
+  # "/internal_accounts/{account_address}/setAllowance/":
+  #   parameters:
+  #     - $ref: "#/components/parameters/accountAddress"
+  #   post:
+  #     tags:
+  #       - Internal Accounts
+  #     summary: Set allowance for a Internal account
+  #     description:
+  #       Gives the ability to withdraw a determined balance from this account to another Internal account without further authorization from the "allower".
+  #       Subsecuent calls will set the allowance limit to the provided amount instead of incrementing the current allowance with the amount.
+  #     operationId: setAllowance
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/SetAllowanceRequest"
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/SetAllowanceResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "402":
+  #         $ref: "#/components/responses/RequestFailed"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "409":
+  #         $ref: "#/components/responses/Conflict"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/ServerError"
+
+  # "/internal_accounts/{account_address}/checkAllowance/":
+  #   parameters:
+  #     - $ref: "#/components/parameters/accountAddress"
+  #   post:
+  #     tags:
+  #       - Internal Accounts
+  #     summary: Check allowance for a Internal account
+  #     description: Returns the allowance a Internal account has from another Internal account.
+  #     operationId: checkAllowance
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/CheckAllowanceRequest"
+  #       required: true
+  #     responses:
+  #       "200":
+  #         description: OK
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/CheckAllowanceResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "402":
+  #         $ref: "#/components/responses/RequestFailed"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/ServerError"
+
+  "/internal_accounts/{account_address}/transfer/":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    post:
+      tags:
+        - Internal Accounts
+      summary: Transfer from a Internal account
+      description: Transfer from a Internal account to another Internal account. Both accounts must share the same currency.
+      operationId: transferFromAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTransactionRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/internal_accounts/{account_address}/fund/":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    post:
+      tags:
+        - Internal Accounts
+      summary: Fund a Internal account using an external account
+      description: Add balance to a Internal account from a external account that has the same currency
+      operationId: fundAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FundRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FundResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/internal_accounts/{account_address}/withdraw/":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    post:
+      tags:
+        - Internal Accounts
+      summary: Withdraw from a Internal account to an external account
+      description: Withdraw balance from a Internal account to a external account.
+      operationId: withdrawFromAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WithdrawRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/transactions/":
+    parameters:
+      - $ref: "#/components/parameters/queryTransactionCurrencySymbol"
+      - $ref: "#/components/parameters/queryTransactionProfileID"
+      - $ref: "#/components/parameters/queryTransactionSenderProfileID"
+      - $ref: "#/components/parameters/queryTransactionReceiverProfileID"
+      - $ref: "#/components/parameters/queryTransactionAccountAddress"
+      - $ref: "#/components/parameters/queryTransactionAccountFromAddress"
+      - $ref: "#/components/parameters/queryTransactionAccountToAddress"
+    get:
+      tags:
+        - Transactions
+      summary: List transactions
+      description:
+        Retrieve a list of transactions utilizing the Currency Symbol,
+        the Profile ID or the Internal Account Address
+      operationId: listTransactions
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/transactions/{transaction_id}":
+    parameters:
+      - $ref: "#/components/parameters/transactionID"
+    get:
+      tags:
+        - Transactions
+      summary: Get a transaction
+      description: Retrieve an existing transaction from its id
+      operationId: getTransaction
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/payment_requests/":
+    get:
+      tags:
+        - Payment Requests
+      summary: List payment requests
+      description: Returns a list of your Payment Requests for a certain account sorted chronologicaly by creation date.
+      operationId: listPaymentRequests
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentRequest"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    post:
+      tags:
+        - Payment Requests
+      summary: Create a payment request
+      description: Create a new payment request
+      operationId: createPaymentRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePaymentRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PaymentRequest"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/payment_requests/{id}":
+    parameters:
+      - $ref: "#/components/parameters/id"
+    get:
+      tags:
+        - Payment Requests
+      summary: Get a payment request
+      description: Retrieve a payment request from a profile
+      operationId: getPaymentRequest
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentRequest"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      tags:
+        - Payment Requests
+      summary: Delete a payment request
+      description: Delete a payment request from a profile
+      operationId: deletePaymentRequest
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/prepays/":
+    get:
+      tags:
+        - Prepays
+      summary: List prepays
+      description: Returns a list of all your unclaimed account prepays sorted by chronologicaly by creation date.
+      operationId: listPrepays
+      parameters:
+        - $ref: "#/components/parameters/queryAccountAddress"
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Prepay"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    post:
+      tags:
+        - Prepays
+      summary: Create a prepay
+      description: Create a new prepay for a Internal account
+      operationId: createPrepay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrepayRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prepay"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/prepays/{id}":
+    parameters:
+      - $ref: "#/components/parameters/id"
+    get:
+      tags:
+        - Prepays
+      summary: Get a prepay
+      description: Retrieve a prepay
+      operationId: getPrepay
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prepay"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/external_accounts/query":
+    parameters:
+      - $ref: "#/components/parameters/currencySymbolQuery"
+      - $ref: "#/components/parameters/accountAddressQuery"
+      - $ref: "#/components/parameters/financialIDQuery"
+    get:
+      tags:
+        - External Accounts
+      summary: Query external accounts
+      description: Returns a list of your external accounts filtered by a parameter.
+      operationId: queryExternalAccounts
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/external_accounts/":
+    post:
+      tags:
+        - External Accounts
+      summary: Create an external account
+      description: Create a new external account
+      operationId: createExternalAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExternalAccountRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/external_accounts/{account_address}":
+    parameters:
+      - $ref: "#/components/parameters/accountAddress"
+    get:
+      tags:
+        - External Accounts
+      summary: Get an external account
+      description: Retrieve a Internal account
+      operationId: getExternalAccount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    put:
+      tags:
+        - External Accounts
+      summary: Update an external account
+      description: Update an external account
+      operationId: updateExternalAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateExternalAccountRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      tags:
+        - External Accounts
+      summary: Delete an external account
+      description: Delete an external account
+      operationId: deleteExternalAccount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalAccount"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/financial_integrations/currency/{currency_symbol}":
+    parameters:
+      - $ref: "#/components/parameters/currencySymbol"
+    get:
+      tags:
+        - Financial Integrations
+      summary: List financial integrations
+      description: Return a list of all a list of your external accounts sorted chronologicaly by creation date.
+      operationId: listFinancialIntegrations
+      parameters:
+        - $ref: "#/components/parameters/limit"
+        - $ref: "#/components/parameters/offset"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/financial_integrations/":
+    post:
+      tags:
+        - Financial Integrations
+      summary: Create a financial integration
+      description: Creates a new financial integration
+      operationId: createFinancialIntegration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFinancialIntegrationRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/financial_integrations/{id}":
+    parameters:
+      - $ref: "#/components/parameters/id"
+    get:
+      tags:
+        - Financial Integrations
+      summary: Get a financial integration
+      description: Retrieve a financial integration from its ID
+      operationId: getFinancialIntegration
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    put:
+      tags:
+        - Financial Integrations
+      summary: Update a financial integration
+      description: Update an existing financial integration
+      operationId: updateFinancialIntegration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFinancialIntegrationRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    delete:
+      tags:
+        - Financial Integrations
+      summary: Delete a financial integration
+      description: Delete an existing financial integration
+      operationId: deleteFinancialIntegration
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FinancialIntegration"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "402":
+          $ref: "#/components/responses/RequestFailed"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  schemas:
+    Currency:
+      type: object
+      properties:
+        symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        name:
+          $ref: "#/components/schemas/CurrencyName"
+        supply:
+          $ref: "#/components/schemas/CurrencySupply"
+        funding_limit:
+          $ref: "#/components/schemas/CurrencyFundingLimit"
+        withdraw_limit:
+          $ref: "#/components/schemas/CurrencyWithdrawLimit"
+    CreateCurrencyRequest:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        balance:
+          $ref: "#/components/schemas/Balance"
+        account_name:
+          $ref: "#/components/schemas/AccountName"
+    InternalAccount:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        currency_name:
+          $ref: "#/components/schemas/CurrencyName"
+        account_name:
+          $ref: "#/components/schemas/AccountName"
+        balance:
+          $ref: "#/components/schemas/Balance"
+    InternalAccountAlt:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        balance:
+          $ref: "#/components/schemas/BalanceZero"
+        account_name:
+          $ref: "#/components/schemas/AccountNameEmergency"
+    CreateInternalAccountRequest:
+      type: object
+      properties:
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        account_name:
+          $ref: "#/components/schemas/AccountName"
+    CreateInternalAccountResponse:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        balance:
+          $ref: "#/components/schemas/BalanceZero"
+        account_name:
+          $ref: "#/components/schemas/AccountName"
+    UpdateInternalAccountRequest:
+      type: object
+      properties:
+        account_name:
+          $ref: "#/components/schemas/AccountNameEmergency"
+    DeleteInternalAccountRequest:
+      type: object
+      properties:
+        account_name:
+          $ref: "#/components/schemas/AccountName"
+    FindInternalAccountDetailsRequest:
+      type: object
+      properties:
+        emails:
+          description: Publicly displayed email of the profile
+          type: array
+          format: email
+          example: [ironman@avengers.com, blackwidow@avengers.com]
+        phone_numbers:
+          description: Public phone number of the profile.
+          type: array
+          example: [+525555555555, +52666666666]
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+    FindInternalAccountDetailsResponse:
+      type: object
+      properties:
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        display_name:
+          description: Publicly displayed name of the profile.
+          type: string
+          minLength: 1
+          example: "Anthony Stark"
+        avatar:
+          description: Publicly displayed avatar of the profile.
+          type: string
+          minLength: 1
+          example: "ajolotle"
+        address:
+          $ref: "#/components/schemas/Address"
+    AuthorizeOperatorRequest:
+      type: object
+      properties:
+        authorized_operator:
+          $ref: "#/components/schemas/ProfileID"
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+    AuthorizeOperatorResponse:
+      type: object
+      properties:
+        authorized_operator:
+          $ref: "#/components/schemas/ProfileID"
+        permissions:
+          $ref: "#/components/schemas/Permissions"
+    RevokeOperatorRequest:
+      type: object
+      properties:
+        authorized_operator:
+          $ref: "#/components/schemas/ProfileID"
+    RevokeOperatorResponse:
+      type: object
+      properties:
+        authorized_operator:
+          $ref: "#/components/schemas/ProfileID"
+        permissions:
+          description: The authorization level
+          type: string
+          example: ""
+    SetAllowanceRequest:
+      type: object
+      properties:
+        for:
+          $ref: "#/components/schemas/Address"
+        amount:
+          $ref: "#/components/schemas/Allowance"
+    SetAllowanceResponse:
+      type: object
+      properties:
+        for:
+          $ref: "#/components/schemas/Address"
+        amount:
+          $ref: "#/components/schemas/Allowance"
+    CheckAllowanceRequest:
+      type: object
+      properties:
+        for:
+          $ref: "#/components/schemas/Address"
+    CheckAllowanceResponse:
+      type: object
+      properties:
+        for:
+          $ref: "#/components/schemas/Address"
+        amount:
+          $ref: "#/components/schemas/Allowance"
+    Transaction:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/TransactionID"
+        status:
+          $ref: "#/components/schemas/TransactionStatus"
+        sender_name:
+          $ref: "#/components/schemas/TransactionSender"
+        receiver_name:
+          $ref: "#/components/schemas/TransactionReceiver"
+        address_from:
+          $ref: "#/components/schemas/Address"
+        address_to:
+          $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        fee:
+          $ref: "#/components/schemas/Fee"
+        concept:
+          $ref: "#/components/schemas/TransactionConcept"
+        data:
+          $ref: "#/components/schemas/TransactionData"
+        date:
+          description: The date of the transaction.
+          type: string
+          format: date
+          minLength: 1
+    CreateTransactionRequest:
+      type: object
+      properties:
+        receiver_profiles_id:
+          type: array
+          items:
+            $ref: "#/components/schemas/TransactionReceiverProfileID"
+        addresses_to:
+          type: array
+          items:
+            $ref: "#/components/schemas/Address"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/TransactionConcept"
+        data:
+          $ref: "#/components/schemas/Data"
+        anonymous:
+          $ref: "#/components/schemas/Anonymous"
+    FundRequest:
+      type: object
+      properties:
+        external_account_address:
+          $ref: "#/components/schemas/Address"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        data:
+          $ref: "#/components/schemas/TransactionData"
+    FundResponse:
+      type: object
+      properties:
+        transaction_id:
+          $ref: "#/components/schemas/TransactionID"
+        external_account:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+    WithdrawRequest:
+      type: object
+      properties:
+        external_account:
+          $ref: "#/components/schemas/Address"
+        amount:
+          $ref: "#/components/schemas/Amount"
+    WithdrawResponse:
+      type: object
+      properties:
+        transaction_id:
+          $ref: "#/components/schemas/TransactionID"
+        external_account:
+          $ref: "#/components/schemas/Address"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+
+    PaymentRequest:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/PaymentRequestID"
+        requestor_profile_id:
+          $ref: "#/components/schemas/PaymentRequestRequestor"
+        requestor_address:
+          $ref: "#/components/schemas/PaymentRequestRequestorAddress"
+        requestor_name:
+          $ref: "#/components/schemas/PaymentRequestRequestorName"
+        requestee_profile_id:
+          $ref: "#/components/schemas/PaymentRequestRequestee"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        anonymous:
+          $ref: "#/components/schemas/PaymentRequestAnonymous"
+    CreatePaymentRequest:
+      type: object
+      properties:
+        requestor_profile_id:
+          $ref: "#/components/schemas/PaymentRequestRequestor"
+        requestor_address:
+          $ref: "#/components/schemas/PaymentRequestRequestorAddress"
+        requestees_profile_id:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentRequestRequestee"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        anonymous:
+          $ref: "#/components/schemas/PaymentRequestAnonymous"
+    Prepay:
+      type: object
+      properties:
+        sender:
+          $ref: "#/components/schemas/ProfileID"
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+    CreatePrepayRequest:
+      type: object
+      properties:
+        currency:
+          $ref: "#/components/schemas/CurrencySymbol"
+        amount:
+          $ref: "#/components/schemas/Amount"
+        concept:
+          $ref: "#/components/schemas/Concept"
+        anonymous:
+          $ref: "#/components/schemas/Anonymous"
+    FinancialIntegration:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/FinancialIntegrationID"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        name:
+          $ref: "#/components/schemas/FinancialIntegrationName"
+        format:
+          type: string
+          description: Helper for identifier what UI should be displayed in graphic interfaces
+          example: credit_card_form
+        account_limit:
+          $ref: "#/components/schemas/FinancialIntegrationLimit"
+        funding:
+          $ref: "#/components/schemas/FinancialIntegrationFunding"
+        withdrawal:
+          $ref: "#/components/schemas/FinancialIntegrationWithdraw"
+        funding_fee:
+          $ref: "#/components/schemas/Fee"
+        withdraw_fee:
+          $ref: "#/components/schemas/Fee"
+    CreateFinancialIntegrationRequest:
+      type: object
+      properties:
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        name:
+          $ref: "#/components/schemas/FinancialIntegrationName"
+        account_limit:
+          $ref: "#/components/schemas/FinancialIntegrationLimit"
+        funding:
+          $ref: "#/components/schemas/FinancialIntegrationFunding"
+        withdrawal:
+          $ref: "#/components/schemas/FinancialIntegrationWithdraw"
+        funding_fee:
+          $ref: "#/components/schemas/Fee"
+        withdraw_fee:
+          $ref: "#/components/schemas/Fee"
+    ExternalAccount:
+      type: object
+      properties:
+        address:
+          $ref: "#/components/schemas/Address"
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
+        financial_integration_id:
+          $ref: "#/components/schemas/FinancialIntegrationID"
+        internal_account_address:
+          $ref: "#/components/schemas/Address"
+        account_name:
+          $ref: "#/components/schemas/AccountName"
+        data:
+          description: "A valid JSON object that may contain extra data"
+          type: string
+          example: '"{"CLABE":"03218000011835971"}'
+    CreateExternalAccountRequest:
+      type: object
+      properties:
+        profile_id:
+          $ref: "#/components/schemas/ProfileID"
+        financial_integration_id:
+          $ref: "#/components/schemas/FinancialIntegrationID"
+        internal_account_address:
+          $ref: "#/components/schemas/Address"
+        account_name:
+          $ref: "#/components/schemas/AccountName"
+        data:
+          description: "A valid JSON object that may contain extra data"
+          type: string
+          example: '"{"CLABE":"03218000011835971"}'
+    UpdateExternalAccountRequest:
+      type: object
+      properties:
+        account_name:
+          $ref: "#/components/schemas/AccountName"
+        data:
+          description: "A valid JSON object that may contain extra data"
+          type: string
+          example: '"{"CLABE":"03218000011835971"}'
+    Address:
+      description: Unique identifier of an account to which monetary transactions are delivered.
+      type: string
+      minLength: 1
+      example: "0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826"
+    CurrencySymbol:
+      description: "Unique identifier for a currency. It is composed by 3 characters denoting the emitting institution followed by a hyphen and 3 chacters with the currency code"
+      type: string
+      minLength: 7
+      maxLength: 7
+      example: "CAO-MXN"
+    CurrencyName:
+      description: "Full name of the currency"
+      type: string
+      minLength: 1
+      example: "Pesos Mexicanos Cacao"
+    CurrencySupply:
+      description: "Total amount of coins in circulation."
+      type: integer
+      example: 243
+    CurrencyFundingLimit:
+      description: "Amount of coins an unverified account can fund."
+      type: integer
+      example: 5000
+    CurrencyWithdrawLimit:
+      description: "Amount of coins an unverified account can withdraw."
+      type: integer
+      example: 4000
+    Balance:
+      description: "Amount of coins present in the account."
+      type: integer
+      example: 243
+    BalanceZero:
+      description: "Amount of coins present in the account."
+      type: integer
+      example: 0
+    AccountName:
+      description: "User generated name of the account"
+      type: string
+      minLength: 1
+      example: "Savings"
+    AccountNameEmergency:
+      description: "User generated name of the account"
+      type: string
+      example: "Emergencies"
+    Amount:
+      description: "Amount paid or requested"
+      type: integer
+      minimum: 1
+      example: 293
+    Allowance:
+      description: "Amount allowed to withdraw from the account"
+      type: integer
+      minimum: 1
+      example: 420
+    Fee:
+      description: "Amount paid as a comission to a third-party"
+      type: integer
+      example: 5
+    Concept:
+      description: "General notion of the transaction"
+      type: string
+      example: Tacos from yesterday
+    Data:
+      description: "Extra data appended to the transaction"
+      type: string
+      example: '{ sender: "tecdebloques"}'
+    ProfileID:
+      description: "Profile unique identifier"
+      type: string
+      minLength: 1
+      example: "0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe"
+    Permissions:
+      description: "The authorization level, can be `read-only` or `full-access`."
+      type: string
+      minLength: 1
+      example: "read-only"
+    Anonymous:
+      description: "If the operation is anonymous the profile identifier will not be public"
+      type: boolean
+      example: false
+    Fulfilled:
+      description: "If the prepay has already been fulfiled"
+      type: boolean
+      example: false
+    FinancialIntegrationID:
+      description: Unique identifier of the the financial integration.
+      type: string
+      minLength: 1
+      example: "25106aa1b402cc3a067316316733470b9c4c20b94893a24b0ea06c84acc92bbf"
+    FinancialIntegrationName:
+      description: "The name of the financial integration"
+      minLength: 1
+      type: string
+      example: "STP"
+    FinancialIntegrationLimit:
+      description: "The amount of external accounts a financial integration may have"
+      type: integer
+      minimum: 1
+      example: 2
+    FinancialIntegrationFunding:
+      description: "Specifies if the financial integration can fund this currency"
+      type: boolean
+      example: true
+    FinancialIntegrationWithdraw:
+      description: "Specifies if the financial integration can withdraw from this currency"
+      type: boolean
+      example: false
+    PaymentRequestID:
+      description: Unique identifier of the payment request.
+      type: string
+      minLength: 1
+      example: "0xa933b5c1526baa60e6382a40c45c9e4d"
+    PaymentRequestRequestor:
+      description: Unique identifier of the profile that created the request.
+      type: string
+      minLength: 1
+      example: "0xba0b295669a9fd93d5f28d9ec85e40f4cb697bae"
+    PaymentRequestRequestorName:
+      description: Display name of who is requesting the payment.
+      type: string
+      minLength: 1
+      example: "Tecnología de Bloques"
+    PaymentRequestRequestorAddress:
+      description: Unique identifier of an account to which the money will be sent.
+      type: string
+      minLength: 1
+      example: "0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826"
+    PaymentRequestRequestee:
+      description: Unique identifier of the profile for which the request was created.
+      type: string
+      minLength: 1
+      example: "0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae"
+    PaymentRequestAnonymous:
+      description: Flag determining if the request is anonymous.
+      type: boolean
+      example: false
+    TransactionID:
+      description: Unique identifier of the transaction.
+      type: string
+      minLength: 1
+      example: "d773cd4dc21975c3f3fec70bcf6e4b43463ce7c53050681f106790036cc6d8be"
+    TransactionStatus:
+      description: "The status of the transaction"
+      type: string
+      minLength: 1
+      example: "Success"
+    TransactionSender:
+      description: "The display name of the sender"
+      type: string
+      example: "Tony Stark"
+    TransactionReceiver:
+      description: "The display name of the recepient"
+      type: string
+      example: "Thanos"
+    TransactionConcept:
+      description: "General notion of the transaction"
+      type: string
+      example: I am Iron Man
+    TransactionData:
+      description: "Extra data appended to the transaction"
+      type: string
+      example: '{"infinity": "maybe"}'
+    TransactionReceiverProfileID:
+      description: "Profile unique identifier of the transaction recepient"
+      type: string
+      example: "0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe"
+    ErrorResponse:
+      type: object
+      properties:
+        type:
+          description: The type of error returned.
+          type: string
+          example: invalid_request_error
+        code:
+          description: A short string indiciating the error reported.
+          type: string
+          example: ERR412
+        message:
+          description: A human readable message provinding more details about the error.
+          type: string
+          example: Account Address must be 20 characters long.
+  responses:
+    BadRequest:
+      description: "The request was unacceptable, often due a invalid or missing required parameter."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: "The request lacks valid authentication credentials for the target resource."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    RequestFailed:
+      description: "The request was valid but it failed."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    NotFound:
+      description: "The requested resource doesn't exist."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Conflict:
+      description: "The request conflicts with another request."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    TooManyRequests:
+      description: "Too many requests hit the API too quickly. Try again later or backoff your requests."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ServerError:
+      description: "Something went wrong on Cacao's end."
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  parameters:
+    accountAddress:
+      name: account_address
+      in: path
+      description: "The address of the internal account for which the operation will be applied"
+      required: true
+      schema:
+        type: string
+    accountAddressQuery:
+      name: account_address
+      in: query
+      description: "The address of the internal account for which the operation will filter"
+      required: false
+      schema:
+        type: string
+    financialIDQuery:
+      name: financial_integration_id
+      in: query
+      description: "The ID of the financial integration for which the operation will filter"
+      required: false
+      schema:
+        type: string
+    externalAddress:
+      name: external_address
+      in: path
+      description: "The address of the external account for which the operation will filter"
+      required: true
+      schema:
+        type: string
+    currencySymbol:
+      name: currency_symbol
+      in: path
+      description: "Symbol of the currency for which the operation will be applied"
+      required: true
+      schema:
+        type: string
+    currencySymbolQuery:
+      name: currency_symbol
+      in: query
+      description: "Symbol of the currency for which the operation will filter"
+      required: false
+      schema:
+        type: string
+    transactionID:
+      name: transaction_id
+      in: path
+      description: "The ID of the transaction"
+      required: true
+      schema:
+        type: string
+    profileID:
+      name: profile_id
+      in: path
+      description: "The unique identifier of the profile"
+      required: true
+      schema:
+        type: string
+    id:
+      name: id
+      in: path
+      description: "The unique identifier of the resource"
+      required: true
+      schema:
+        type: string
+    queryAccountAddress:
+      name: account_address
+      in: query
+      description: "The account address of the payment requester"
+      required: true
+      schema:
+        type: string
+    queryProfileID:
+      name: profile
+      in: query
+      description: "The profile ID of the owner of the resource"
+      schema:
+        type: string
+    queryTransactionCurrencySymbol:
+      name: currency
+      in: query
+      description: "The currency symbol of the transaction"
+      schema:
+        type: string
+    queryTransactionProfileID:
+      name: profile
+      in: query
+      description: "The profile ID of the sender or recepient of the transactions"
+      schema:
+        type: string
+    queryTransactionSenderProfileID:
+      name: sender_profile
+      in: query
+      description: "The profile ID of the sender of the transactions"
+      schema:
+        type: string
+    queryTransactionReceiverProfileID:
+      name: receiver_profile
+      in: query
+      description: "The profile ID of the recepient of the transactions"
+      schema:
+        type: string
+    queryTransactionAccountAddress:
+      name: account
+      in: query
+      description: "The account address of the sender or recepient of the transaction"
+      schema:
+        type: string
+    queryTransactionAccountFromAddress:
+      name: account_from
+      in: query
+      description: "The account address of the sender of the transaction"
+      schema:
+        type: string
+    queryTransactionAccountToAddress:
+      name: account_to
+      in: query
+      description: "The account address of the recepient of the transaction"
+      schema:
+        type: string
+    email:
+      name: email
+      in: query
+      description: "A filter on the list based on the email from the object owner. The value must be a string."
+      schema:
+        type: string
+    applicationId:
+      name: application_id
+      in: query
+      description: "A filter on the list based on the application_id from the object owner. The value must be a string."
+      schema:
+        type: string
+    limit:
+      name: limit
+      in: query
+      description: "A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10."
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 100
+    offset:
+      name: start
+      in: query
+      description: "From what object number will the pagination start"
+      schema:
+        type: integer
+        minimum: 1
+
+  headers:
+    ExpiresAfter:
+      description: date in UTC when token expires
+      schema:
+        type: string
+        format: date-time
+
+  securitySchemes:
+    oAuth:
+      description: "Blah"
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: "http://example.com/api/oauth/dialog"
+          scopes:
+            "read:users": read users info
+            "write:users": modify or remove users
+    SecretApiKey:
+      type: apiKey
+      in: header
+      name: api_key
