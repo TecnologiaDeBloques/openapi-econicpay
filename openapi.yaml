@@ -2,10 +2,10 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: Econic Pay API Reference
-  termsOfService: 'https://www.econicapp.com/terminos/'
+  termsOfService: 'https://www.econicnet.com/terminos/'
   contact:
     email: devops@econicpay.com
-    url: 'http://www.econicapp.com/contacto'
+    url: 'http://www.econicnet.com/contacto'
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -13,29 +13,34 @@ info:
     url: 'https://storage.googleapis.com/econic-assets/econicpay_logo_white.png'
   description: |
     # Introduction
-    The Econic Pay API is built on HTTP around REST and resource oriented URLs. 
-    It accepts form-encoded request bodies and returns JSON responses.
-    Standard HTTP response codes and verbs are used. 
+    Econic Pay is a electronic payment system which allows the creation of a wide range of `Currencies` or `Tokens` that can be traded among the
+    users of the system.
 
-    You can try the Econic Pay API in its testnet environment, which does 
-    not affect live data, utilize real money or interacts with production banking networks. 
-    Each environment has its own accounts and objects, so you will need
-    to create a Econic ID account for the testnet environment.
+    The Econic Pay API implements the OAuth 2 protocol and is built on HTTP around REST and resource oriented URLs. 
+    It accepts requests bodies encoded in JSON and returns responses enconded JSON as well. Standard HTTP response codes and verbs are used. 
+
+    # Enviroments
+    All the Econic products have a public sandbox environment, known as testnet, for demo and testing purposes. Each environment is completely separated, 
+    so you will need to create a separate Econic ID `testnet` account for using the Econic Pay testnet environment.
 
     # Authentication
-    Econic Pay offers two forms of authentication:
-      - OAuth2
-      - API Key
-
-    # Pagination
-
-    TODO
-
-    # SDKs
-    TODO
+    Econic Pay utilizes [Econic ID API Keys](https://tecnologiadebloques.github.io/openapi-econicid/#tag/Key) for authentication and authorization. Please follow the guidelines 
+    on the Econic ID documentation to create your API Keys.
 
     # Getting Started
-    TODO
+    We recomend you use [Postman](https://www.postman.com/) while getting familiar with the API. Once you have requested access, you will be provided with 
+    an OAuth2 client credentials, so you can create your Econic ID account though Postman or a OAuth2 library. 
+
+    The first thing you need is to create an [Econic ID account](https://tecnologiadebloques.github.io/openapi-econicid/#section/Getting-Started). All resources
+    from Econic Pay are owned and managed by an [Econic ID profile](https://tecnologiadebloques.github.io/openapi-econicid/#tag/Profile). Please follow the 
+    instructions on how to create an API Key, as you will need one for accessing Econic Pay.
+
+    After you have created your API Key, you will need to sign your requests using the `Private Key` you saved previously, and attach a `Signature` and a `Transaction Key`. 
+    While signatures can be created in any programming language, for convinience we recommend you use our [developer toolkit](https://github.com/TecnologiaDeBloques/node-developer-toolkit). 
+    This tool will generate the signature for you, and if you are using Postman it will automatically add it to the request header.
+
+    Once you have created your Econic ID account, and have set up your API Key you are free to explore the Econic Pay API and its different resources. We recommend you start by 
+    creating a `Internal Account` for an existing currency, or to even create your own currency.
 tags:
   - name: Currency
     description: |
@@ -43,7 +48,7 @@ tags:
       <SchemaDefinition schemaRef="#/components/schemas/Currency" />
   - name: Internal Account
     description: |
-      Internal Accounts store a certain currency and can transfer their balance to other Cacao and External accounts that utilize the same currency. 
+      Internal Accounts store a certain currency and can transfer their balance to other Econic and External accounts that utilize the same currency. 
       <SchemaDefinition schemaRef="#/components/schemas/InternalAccount" />
   - name: Transaction
     description: |
@@ -89,8 +94,7 @@ x-tagGroups:
       - Payment Requests
       - Prepays
 security:
-  - oAuth: []
-  - SecretApiKey: []
+  - APIKey: []
 servers:
   - url: 'https://testnet.econicpay.com/'
     description: Public testing environment
@@ -1054,8 +1058,8 @@ components:
           description: Public phone number of the profile.
           type: array
           example:
-            - 525555555555
-            - 52666666666
+            - '+525555555555'
+            - '+52666666666'
         currency_symbol:
           $ref: '#/components/schemas/CurrencySymbol'
     FindInternalAccountDetailsResponse:
@@ -1373,12 +1377,12 @@ components:
       type: string
       minLength: 7
       maxLength: 7
-      example: CAO-MXN
+      example: TBL-MXN
     CurrencyName:
       description: Full name of the currency
       type: string
       minLength: 1
-      example: Pesos Mexicanos Cacao
+      example: Pesos Mexicanos por TBL
     CurrencySupply:
       description: Total amount of coins in circulation.
       type: integer
@@ -1583,7 +1587,7 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     ServerError:
-      description: Something went wrong on Cacao's end.
+      description: Something went wrong on Econic's end.
       content:
         application/json:
           schema:
@@ -1741,16 +1745,18 @@ components:
         type: string
         format: date-time
   securitySchemes:
-    oAuth:
-      description: Blah
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: 'http://example.com/api/oauth/dialog'
-          scopes:
-            'read:users': read users info
-            'write:users': modify or remove users
-    SecretApiKey:
+    APIKey:
+      description: 'The Econic Pay API needs to be accessed by utilizing API Keys which are based on the Ed25519 public-key system. Please check the [Econic ID documentation](https://tecnologiadebloques.github.io/openapi-econicid/#operation/createKey) on how to create an API Key. The API Key must be included in the headers. **Example** `Authorization:` `ApiKey-v1 etRWGzf+AY8m6DHalxO28aTDi0PXRi7w3L4F0XKSf/Y=`'
       type: apiKey
       in: header
-      name: api_key
+      name: Authorization
+    Signature:
+      description: 'A valid signature must be provided in the headers alongside the API Key. Signatures can be generated utilizing the Private Key and one of our official libraries. **Example** `Signature:` `9a75ZaHd8ULqtZfgVounQItJ3eSqMd25IDe6tNizUJj52ZdlEBP4tjMtUhGi/q84WlrFxrbL3EuqqNitDX7KBQ==`'
+      type: apiKey
+      in: header
+      name: Signature
+    TransactionKey:
+      description: 'The Transaction Key is required for authorizing account creation, and currency movements, such as transfer and withdrawal. The API TransactionKey must be included in the headers. **Example** `TrasnsactionKey:` `rbpQ+aDl5inNZi6hLE2isBxcFLG1Szim9f62JxxuS6c=`'
+      type: apiKey
+      in: header
+      name: TransactionKey
