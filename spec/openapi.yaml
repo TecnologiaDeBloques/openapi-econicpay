@@ -95,8 +95,7 @@ x-tagGroups:
       - Payment Requests
       - Prepays
 security:
-  - oAuth: []
-  - SecretApiKey: []
+  - APIKey: []
 servers:
   - url: "https://testnet.econicpay.com/"
     description: Public testing environment
@@ -1239,7 +1238,7 @@ components:
         phone_numbers:
           description: Public phone number of the profile.
           type: array
-          example: [+525555555555, +52666666666]
+          example: ['+525555555555', '+52666666666']
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
     FindInternalAccountDetailsResponse:
