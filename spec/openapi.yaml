@@ -45,8 +45,18 @@ info:
 tags:
   - name: Currency
     description: |
-      A digital asset that can be used as a medium of exchange.
-      <SchemaDefinition schemaRef="#/components/schemas/Currency" />
+      A digital asset that can be used as a medium of exchange inside the Econic Pay platform. Also know as tokens, these digital assets are created by a Profile which becomes 
+      its central authority and has full permissions over its monetary policy. 
+
+      During creation, the central authority defines the symbol of the currency, alongside its name, initial supply and decimal places. The symbol, name and the number of decimal places
+      can't be changed after creation, but the supply can be incremented though minting more coins.
+
+      Balance of a currency can be transfered among other participants by anyone who possess it, unless the whitelist property is defined
+      but only the central authority has the permission to mint more coins.
+
+      Currencies can't be destroyed, unless the entirity of its supply is being hold by the central authority.
+
+      <SchemaDefinition schemaRef="#/components/schemas/CurrencyModel" />
   - name: Internal Account
     description: |
       Internal Accounts store a certain currency and can transfer their balance to other Econic and External accounts that utilize the same currency. 
@@ -1145,7 +1155,7 @@ paths:
 
 components:
   schemas:
-    Currency:
+    CurrencyModel:
       type: object
       properties:
         symbol:
@@ -1156,10 +1166,14 @@ components:
           $ref: "#/components/schemas/CurrencyName"
         supply:
           $ref: "#/components/schemas/CurrencySupply"
+        decimal_places:
+          $ref: "#/components/schemas/CurrencyDecimalPlaces"
         funding_limit:
           $ref: "#/components/schemas/CurrencyFundingLimit"
         withdraw_limit:
           $ref: "#/components/schemas/CurrencyWithdrawLimit"
+        whitelist:
+          $ref: "#/components/schemas/CurrencyWhitelist"
     CreateCurrencyRequest:
       type: object
       properties:
@@ -1238,7 +1252,7 @@ components:
         phone_numbers:
           description: Public phone number of the profile.
           type: array
-          example: ['+525555555555', '+52666666666']
+          example: ["+525555555555", "+52666666666"]
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
     FindInternalAccountDetailsResponse:
@@ -1558,6 +1572,11 @@ components:
       minLength: 7
       maxLength: 7
       example: "TBL-MXN"
+    CurrencyProfileID:
+      description: "Profile ID of the owner and central authority of this currency"
+      type: string
+      minLength: 1
+      example: "0x99fdc1be543a1f4dc9505c2fb6e1be89e6799d853c64c392f6cb0842d3c1be32"
     CurrencyName:
       description: "Full name of the currency"
       type: string
@@ -1565,6 +1584,10 @@ components:
       example: "Pesos Mexicanos por TBL"
     CurrencySupply:
       description: "Total amount of coins in circulation."
+      type: integer
+      example: 243
+    CurrencyDecimalPlaces:
+      description: "Amount of decimals that the currency can have"
       type: integer
       example: 243
     CurrencyFundingLimit:
@@ -1575,6 +1598,10 @@ components:
       description: "Amount of coins an unverified account can withdraw."
       type: integer
       example: 4000
+    CurrencyWhitelist:
+      description: "If defined, only these profiles can receive a transaction for this currency"
+      type: string
+      example: "[0xC257274276a4E539741Ca11b590B9447B26A8051, 0x96e735e016497d6591ee8125dece17fc2586cb8e]"
     Balance:
       description: "Amount of coins present in the account."
       type: integer
