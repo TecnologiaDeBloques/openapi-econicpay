@@ -1460,6 +1460,11 @@ components:
           $ref: "#/components/schemas/Concept"
         anonymous:
           $ref: "#/components/schemas/PaymentRequestAnonymous"
+        data:
+          description: "A valid JSON object that may contain extra data"
+          type: string
+          example: '"{"Code":"420"}'
+
     CreatePaymentRequest:
       type: object
       properties:
@@ -1559,12 +1564,16 @@ components:
           $ref: "#/components/schemas/Address"
         profile_id:
           $ref: "#/components/schemas/ProfileID"
-        currency_symbol:
-          $ref: "#/components/schemas/CurrencySymbol"
         financial_integration_id:
           $ref: "#/components/schemas/FinancialIntegrationID"
         internal_account_address:
           $ref: "#/components/schemas/Address"
+        reference:
+          description: "A reference or code that is used by the third party to identify this account"
+          type: string
+          example: "03218000011835971"
+        currency_symbol:
+          $ref: "#/components/schemas/CurrencySymbol"
         account_name:
           $ref: "#/components/schemas/AccountName"
         data:
