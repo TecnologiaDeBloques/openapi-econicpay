@@ -20,31 +20,31 @@
   "tags": [
     {
       "name": "Currency",
-      "description": "A digital asset that can be used as a medium of exchange.\n<SchemaDefinition schemaRef=\"#/components/schemas/Currency\" />\n"
+      "description": "A digital asset that can be used as a medium of exchange inside the Econic Pay platform. Also know as tokens, these digital assets are created by a `Profile` which becomes \nits central authority and has full permissions over its monetary policy. \n\nDuring creation, the central authority defines the symbol of the `currency`, alongside its name, initial supply and decimal places. The symbol, name and the number of decimal places\ncan't be changed after creation, but the supply can be incremented though minting more coins.\n\nBalance of a `currency` is stored in `Internal Accounts` and can be transfered among other participants by anyone who possess it, unless the whitelist property is defined\nbut only the central authority has the permission to mint more coins.\n\n`Currencies` can't be destroyed, unless the entirity of its supply is being hold by the central authority.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/CurrencyModel\" />\n"
     },
     {
       "name": "Internal Account",
-      "description": "Internal Accounts store a certain currency and can transfer their balance to other Econic and External accounts that utilize the same currency. \n<SchemaDefinition schemaRef=\"#/components/schemas/InternalAccount\" />\n"
+      "description": "Also known as Econic Accounts, store balance from a certain `currency`; allow transfering to other `Internal Accounts` that have the same currency; \ncan be funded from an `External Account` and can withdraw to an `External Account`.\n\nEvery `Internal Account` is owned by a `Profile` and requires the use of `API Key` for signing transactions. `Internal Accounts` can only be deleted if its balance is zero.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/InternalAccount\" />\n"
     },
     {
       "name": "Transaction",
-      "description": "Transactions represent all monetary transfers of value from a Internal Account \n<SchemaDefinition schemaRef=\"#/components/schemas/Transaction\" />\n"
+      "description": "Any transfer of balance from or towards an `Internal Account` is recorded as a `Transaction`. \n\nTransactions can be filtered by the sender, the receiver or the `currency` that was used. A special property of transactions in Econic is that they can be *Anonymous*,\nmeaning that they can be sent or received while hidding the identity of the `profile` that desired the anonymity.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/Transaction\" />\n"
     },
     {
       "name": "Financial Integration",
-      "description": "A Financial Integration is a third party integration that can be used to fund or withdraw a determined currency.\n<SchemaDefinition schemaRef=\"#/components/schemas/FinancialIntegration\" />\n"
+      "description": "Third party integration that can be used to fund or withdraw a determined `currency`. \n\nThis is what allows the creation of `currencies` that have a parity with an asset that is external to the system. A `Financial Integration` for example\ncan be a credit card payment processor, which allows a certain `currency` to be funded though a Debit/Credit card.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/FinancialIntegration\" />\n"
     },
     {
       "name": "External Account",
-      "description": "External Accounts are third party integrations such as banking accounts or debit cards that can be used by Internal Accounts for funding or withdrawing from a certain currency.\n<SchemaDefinition schemaRef=\"#/components/schemas/ExternalAccount\" />\n"
+      "description": "Accounts from third party integrations that can be used to fund or withdraw to a `Internal Account`.\n\n`External Accounts` are any kind of account, such as a credit bard or a banking account` that can be used alongside a `Financial Integration` in order to fund or withdraw\nan asset from an `Internal Account`.\n\n<SchemaDefinition schemaRef=\"#/components/schemas/ExternalAccount\" />\n"
     },
     {
       "name": "Payment Request",
-      "description": "Payment Requests are soliciations for payments that can be fullfilled by the requested party.\n<SchemaDefinition schemaRef=\"#/components/schemas/PaymentRequest\" />\n"
+      "description": "As the name implies, these are solicitations for payments that a requesting `profile` can send to a requestee `profile`.\n\nOnce a `Payment Request` is sent, the requestee will receive a notification and can decide either to pay the request, or to delete it.\n`Payment requests` just as `transactions` can be *Anoynymous* .\n\n<SchemaDefinition schemaRef=\"#/components/schemas/PaymentRequest\" />\n"
     },
     {
       "name": "Prepay",
-      "description": "Prepays are payments done in advance that can be fullfilled by the recipient. (NOT IMPLEMENTED)\n<SchemaDefinition schemaRef=\"#/components/schemas/Prepay\" />\n"
+      "description": "Pre-authorized payments, that can be claimed by the recipient without any interaction of the sender.\n\n[Currently not enabled]\n\n<SchemaDefinition schemaRef=\"#/components/schemas/Prepay\" />\n"
     }
   ],
   "x-tagGroups": [
@@ -1483,7 +1483,7 @@
   },
   "components": {
     "schemas": {
-      "Currency": {
+      "CurrencyModel": {
         "type": "object",
         "properties": {
           "symbol": {
@@ -1498,11 +1498,17 @@
           "supply": {
             "$ref": "#/components/schemas/CurrencySupply"
           },
+          "decimal_places": {
+            "$ref": "#/components/schemas/CurrencyDecimalPlaces"
+          },
           "funding_limit": {
             "$ref": "#/components/schemas/CurrencyFundingLimit"
           },
           "withdraw_limit": {
             "$ref": "#/components/schemas/CurrencyWithdrawLimit"
+          },
+          "whitelist": {
+            "$ref": "#/components/schemas/CurrencyWhitelist"
           }
         }
       },
@@ -1906,6 +1912,11 @@
           },
           "anonymous": {
             "$ref": "#/components/schemas/PaymentRequestAnonymous"
+          },
+          "data": {
+            "description": "A valid JSON object that may contain extra data",
+            "type": "string",
+            "example": "\"{\"Code\":\"420\"}"
           }
         }
       },
@@ -1978,6 +1989,9 @@
           "id": {
             "$ref": "#/components/schemas/FinancialIntegrationID"
           },
+          "internal_account_address": {
+            "$ref": "#/components/schemas/Address"
+          },
           "currency_symbol": {
             "$ref": "#/components/schemas/CurrencySymbol"
           },
@@ -2003,6 +2017,16 @@
           },
           "withdraw_fee": {
             "$ref": "#/components/schemas/Fee"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Is the financial integration enabled",
+            "example": true
+          },
+          "whitelist": {
+            "description": "If defined, only these profiles can use this financial integration",
+            "type": "string",
+            "example": "[0xC257274276a4E539741Ca11b590B9447B26A8051, 0x96e735e016497d6591ee8125dece17fc2586cb8e]"
           }
         }
       },
@@ -2041,14 +2065,19 @@
           "profile_id": {
             "$ref": "#/components/schemas/ProfileID"
           },
-          "currency_symbol": {
-            "$ref": "#/components/schemas/CurrencySymbol"
-          },
           "financial_integration_id": {
             "$ref": "#/components/schemas/FinancialIntegrationID"
           },
           "internal_account_address": {
             "$ref": "#/components/schemas/Address"
+          },
+          "reference": {
+            "description": "A reference or code that is used by the third party to identify this account",
+            "type": "string",
+            "example": "03218000011835971"
+          },
+          "currency_symbol": {
+            "$ref": "#/components/schemas/CurrencySymbol"
           },
           "account_name": {
             "$ref": "#/components/schemas/AccountName"
@@ -2108,6 +2137,12 @@
         "maxLength": 7,
         "example": "TBL-MXN"
       },
+      "CurrencyProfileID": {
+        "description": "Profile ID of the owner and central authority of this currency",
+        "type": "string",
+        "minLength": 1,
+        "example": "0x99fdc1be543a1f4dc9505c2fb6e1be89e6799d853c64c392f6cb0842d3c1be32"
+      },
       "CurrencyName": {
         "description": "Full name of the currency",
         "type": "string",
@@ -2116,6 +2151,11 @@
       },
       "CurrencySupply": {
         "description": "Total amount of coins in circulation.",
+        "type": "integer",
+        "example": 243
+      },
+      "CurrencyDecimalPlaces": {
+        "description": "Amount of decimals that the currency can have",
         "type": "integer",
         "example": 243
       },
@@ -2128,6 +2168,11 @@
         "description": "Amount of coins an unverified account can withdraw.",
         "type": "integer",
         "example": 4000
+      },
+      "CurrencyWhitelist": {
+        "description": "If defined, only these profiles can receive a transaction for this currency",
+        "type": "string",
+        "example": "[0xC257274276a4E539741Ca11b590B9447B26A8051, 0x96e735e016497d6591ee8125dece17fc2586cb8e]"
       },
       "Balance": {
         "description": "Amount of coins present in the account.",
