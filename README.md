@@ -1,4 +1,4 @@
-# econicpay OpenAPI REST Specification
+# Econic Pay OpenAPI REST Specification
 
 [Documentation Link](https://tecnologiadebloques.github.io/openapi-econicpay/)
 

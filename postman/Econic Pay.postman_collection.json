@@ -1,0 +1,1181 @@
+{
+	"info": {
+		"_postman_id": "1b032cd8-2c9f-42d5-a557-5acf6c1a365b",
+		"name": "Econic Pay",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/currencies",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/currencies",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"currencies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/currencies",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c65a86ae-61a1-4a4e-8a1d-dfdbd953764a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"profile_id\": \"{{profile_id}}\", \n\t\"symbol\":\"TBL-LTG\", \n\t\"name\":\"Litros de gasolina\", \n\t\"initial_supply\": 10000000, \n\t\"decimal_places\": 2\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/currencies",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"currencies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/currencies",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c65a86ae-61a1-4a4e-8a1d-dfdbd953764a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"Pesos Mexicanos por TBL\"\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/currencies/{{currency_symbol}}",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"currencies",
+						"{{currency_symbol}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/currencies",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c65a86ae-61a1-4a4e-8a1d-dfdbd953764a",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"profile_id\": \"{{profile_id}}\", \n\t\"symbol\":\"TBL-USD\", \n\t\"name\":\"Dolares Americanos\", \n\t\"initial_supply\": 1000000, \n\t\"decimal_places\": 2, \n\t\"funding_limit\": 6000, \n\t\"withdraw_limit\": 6000\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/currencies",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"currencies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/currencies/:id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/currencies/:id",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"currencies",
+						":id"
+					],
+					"variable": [
+						{
+							"id": "47e4debb-53d1-4335-9b33-5c29a2738430",
+							"key": "id",
+							"value": "",
+							"type": "string"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/currencies/:symbol/mint",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cacao_account_address\": \"0x7410f4f1ff25a972e9d0637bca1f00a68b08cfe3\", \"amount\":1000}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/currencies/TST-MXN/mint",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"currencies",
+						"TST-MXN",
+						"mint"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/internal_accounts",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/internal_accounts?profile={{profile_id}}",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"internal_accounts"
+					],
+					"query": [
+						{
+							"key": "profile",
+							"value": "{{profile_id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/internal_accounts",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account_name\": \"Openpay Funding\",\n    \"currency_symbol\": \"TBL-MXN\",\n    \"profile_id\": \"{{profile_id}}\"\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/internal_accounts",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"internal_accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/internal_accounts/:address",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/internal_accounts/0x5293b8b54443f99ce8400b46f9970b83c330de7b",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"internal_accounts",
+						"0x5293b8b54443f99ce8400b46f9970b83c330de7b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/internal_accounts/find",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"emails\": [],\n \"phone_numbers\": [\"5555228243\", \"+525561183957\"],\n \"currency_symbol\": \"FVA-FCO\"\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/internal_accounts/find",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"internal_accounts",
+						"find"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/internal_accounts/:address",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/cacao_accounts/0x5293b8b54443f99ce8400b46f9970b83c330de7b",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"cacao_accounts",
+						"0x5293b8b54443f99ce8400b46f9970b83c330de7b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/internal_accounts/:address/transfer",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"receiver_profiles_id\": [\n\"0xb95e0be9b8a699b59ab7e186e5cb431b9f665dd9\"\n],\n\"addresses_to\": [\n\"0x3beb734e1000912178bf21fc61ee86fad907586c\"\n],\n\"currency_symbol\": \"{{currency_symbol}}\",\n\"amount\": 100,\n\"concept\": \"Test transaction\",\n\"data\": \"\",\n\"anonymous\": false\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/internal_accounts/{{sender_address}}/transfer",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"internal_accounts",
+						"{{sender_address}}",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/internal_accounts/:address/fund",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"external_account_address\": \"0x16a3f4dd84a6cabd8a520e2313c1208b6ed1564d\",\n\"amount\": 20,\n\"data\": \"cvv2\\\":842\"\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/internal_accounts/{{sender_address}}/fund",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"internal_accounts",
+						"{{sender_address}}",
+						"fund"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/internal_accounts/:address/withdraw",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "ApiKey-v1 {{api_key}}"
+					},
+					{
+						"key": "Signature",
+						"type": "text",
+						"value": "{{signature}}"
+					},
+					{
+						"key": "TransactionKey",
+						"type": "text",
+						"value": "{{transaction_key}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"external_account_address\": \"0x16a3f4dd84a6cabd8a520e2313c1208b6ed1564d\",\n\"amount\": 20,\n\"data\": \"cvv2\\\":842\"\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/internal_accounts/{{sender_address}}/withdraw",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"internal_accounts",
+						"{{sender_address}}",
+						"withdraw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/external_accounts/query",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/external_accounts/query?currency_symbol=TST-MXN",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"external_accounts",
+						"query"
+					],
+					"query": [
+						{
+							"key": "currency_symbol",
+							"value": "TST-MXN"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/external_accounts",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"profile_id\": \"0x7df8a347221688d85e3ad6ebe301e57fcc9008bb\",\n    \"financial_integration_id\": \"0x838640f08f8362bf60a7b06963248f9cb4818040490bae13f2a4a78dde8f1285\",\n    \"internal_account_address\": \"0x2be0aa20b5bf104818d90326a724864fa405cb63\",\n    \"account_name\": \"TC Ixe Oro\",\n    \"data\": \"{\\\"holder_name\\\":\\\"Tokenizacion cargo directo\\\",\\\"card_number\\\":4242424242424242,\\\"cvv2\\\":842,\\\"expiration_month\\\":11,\\\"expiration_year\\\":29}\"\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/external_accounts",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"external_accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/external_accounts",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "TransactionKey",
+						"value": "{{transaction_key}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"profile_id\": \"0x7df8a347221688d85e3ad6ebe301e57fcc9008bb\",\n    \"financial_integration_id\": \"0x838640f08f8362bf60a7b06963248f9cb4818040490bae13f2a4a78dde8f1285\",\n    \"internal_account_address\": \"0x2be0aa20b5bf104818d90326a724864fa405cb63\",\n    \"account_name\": \"TC Ixe Oro\",\n    \"data\": \"{\\\"holder_name\\\":\\\"Tokenizacion cargo directo\\\",\\\"card_number\\\":4242424242424242,\\\"cvv2\\\":842,\\\"expiration_month\\\":11,\\\"expiration_year\\\":29}\"\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/external_accounts",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"external_accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/external_accounts/:address",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/external_accounts/0xd55bc970fe071e611ed3c8abba5fb95a69128a48",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"external_accounts",
+						"0xd55bc970fe071e611ed3c8abba5fb95a69128a48"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/transactions/",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/transactions/0xd68be37d358cd13518a417a90be0ce14cda209c20c8f91504ebe62e67998f2c5",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"transactions",
+						"0xd68be37d358cd13518a417a90be0ce14cda209c20c8f91504ebe62e67998f2c5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/transactions/?query",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/transactions?account=0x57ce52e70d6b61a5e2dee1e72afcabdfb3a9a500",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "account",
+							"value": "0x57ce52e70d6b61a5e2dee1e72afcabdfb3a9a500"
+						},
+						{
+							"key": "profile",
+							"value": "0xe6254b2ba2da45b4243afe7b3d48fed100891d3b",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/financial_integrations/currencies/:currency",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/financial_integrations/currency/{{currency_symbol}}",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"financial_integrations",
+						"currency",
+						"{{currency_symbol}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/financial_integrations/",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"internal_account_address\": \"0xe3a0a3396c0b0e9e11e0244d56546a5880f495fc\",\n\t\"currency_symbol\": \"{{currency_symbol}}\", \n\t\"name\": \"Tarjeta de credito\",\n\t\"account_limit\": 0,\n\t\"format\": \"go-openpay-finent\",\n\t\"funding\": true, \n\t\"withdrawal\": false,\n\t\"funding_fee\": 0,\n\t\"withdraw_fee\": 0\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/financial_integrations",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"financial_integrations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/financial_integrations/:id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"currency_symbol\": \"{{currency_symbol}}\", \n\t\"name\": \"Tarjeta de credito\",\n\t\"internal_account_address\": \"0xe3a0a3396c0b0e9e11e0244d56546a5880f495fc\",\n    \"format\": \"go-openpay-finent\",\n\t\"account_limit\": 0,\n\t\"funding\":true, \n\t\"withdrawal\":false,\n\t\"enabled\": false\n}"
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/financial_integrations/{{financial_integration_id}}",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"financial_integrations",
+						"{{financial_integration_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/financial_integrations/:id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{econic_pay_url}}/financial_integrations/0x4d6edef1f557af9886f4485d1aa3db0ab8aa8a795fd8f41429f292ab287d47e3",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"financial_integrations",
+						"0x4d6edef1f557af9886f4485d1aa3db0ab8aa8a795fd8f41429f292ab287d47e3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/payment_requests/",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/payment_requests",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"payment_requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/payment_requests/",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "ApiKey-v1 {{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{econic_pay_url}}/payment_requests",
+					"host": [
+						"{{econic_pay_url}}"
+					],
+					"path": [
+						"payment_requests"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "3da338ba-7a23-4359-af72-c0813157b1e1",
+				"type": "text/javascript",
+				"exec": [
+					"let privateKey = pm.environment.get('private_key')",
+					"if (!privateKey) {",
+					"    console.log(\"No private key defined, will not generate signature\")",
+					"    return",
+					"}",
+					"",
+					"privateKey = privateKey.replace(/\\//g, \"%2F\")",
+					"",
+					"pm.sendRequest('localhost:666/signature/'+privateKey, function (err, res) {",
+					"     if (err){",
+					"        console.log(\"Error: Econic Developer Tools not running\")",
+					"        return",
+					"    } ",
+					"    ",
+					"    const response = res.json()",
+					"     if (!res.signature) {",
+					"        console.log(\"Error: Econic Developer Tools replied with an error\")",
+					"    }",
+					"    ",
+					"    pm.environment.set('signature', response.signature)",
+					"})"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "361a7ecd-fa89-471a-9399-1811a5f2482d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
