@@ -59,7 +59,7 @@ tags:
       <SchemaDefinition schemaRef="#/components/schemas/CurrencyModel" />
   - name: Internal Account
     description: |
-      `Internal Accounts`, also known as Econic Accounts, store balance from a certain `currency`; allow transfering to other `Internal Accounts` that have the same currency; 
+      Also known as Econic Accounts, store balance from a certain `currency`; allow transfering to other `Internal Accounts` that have the same currency; 
       can be funded from an `External Account` and can withdraw to an `External Account`.
 
       Every `Internal Account` is owned by a `Profile` and requires the use of `API Key` for signing transactions. `Internal Accounts` can only be deleted if its balance is zero.
@@ -67,23 +67,42 @@ tags:
       <SchemaDefinition schemaRef="#/components/schemas/InternalAccount" />
   - name: Transaction
     description: |
-      Transactions represent all monetary transfers of value from a Internal Account 
+      Any transfer of balance from or towards an `Internal Account` is recorded as a `Transaction`. 
+
+      Transactions can be filtered by the sender, the receiver or the `currency` that was used. A special property of transactions in Econic is that they can be *Anonymous*,
+      meaning that they can be sent or received while hidding the identity of the `profile` that desired the anonymity.
+
       <SchemaDefinition schemaRef="#/components/schemas/Transaction" />
   - name: Financial Integration
     description: |
-      A Financial Integration is a third party integration that can be used to fund or withdraw a determined currency.
+      Third party integration that can be used to fund or withdraw a determined `currency`. 
+
+      This is what allows the creation of `currencies` that have a parity with an asset that is external to the system. A `Financial Integration` for example
+      can be a credit card payment processor, which allows a certain `currency` to be funded though a Debit/Credit card.
+
       <SchemaDefinition schemaRef="#/components/schemas/FinancialIntegration" />
   - name: External Account
     description: |
-      External Accounts are third party integrations such as banking accounts or debit cards that can be used by Internal Accounts for funding or withdrawing from a certain currency.
+      Accounts from third party integrations that can be used to fund or withdraw to a `Internal Account`.
+
+      `External Accounts` are any kind of account, such as a credit bard or a banking account` that can be used alongside a `Financial Integration` in order to fund or withdraw
+      an asset from an `Internal Account`.
+
       <SchemaDefinition schemaRef="#/components/schemas/ExternalAccount" />
   - name: Payment Request
     description: |
-      Payment Requests are soliciations for payments that can be fullfilled by the requested party.
+      As the name implies, these are solicitations for payments that a requesting `profile` can send to a requestee `profile`.
+
+      Once a `Payment Request` is sent, the requestee will receive a notification and can decide either to pay the request, or to delete it.
+      `Payment requests` just as `transactions` can be *Anoynymous* .
+
       <SchemaDefinition schemaRef="#/components/schemas/PaymentRequest" />
   - name: Prepay
     description: |
-      Prepays are payments done in advance that can be fullfilled by the recipient. (NOT IMPLEMENTED)
+      Pre-authorized payments, that can be claimed by the recipient without any interaction of the sender.
+
+      [Currently not enabled]
+
       <SchemaDefinition schemaRef="#/components/schemas/Prepay" />
 x-tagGroups:
   - name: "Resource Models"
@@ -1487,6 +1506,8 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/FinancialIntegrationID"
+        internal_account_address:
+          $ref: "#/components/schemas/Address"
         currency_symbol:
           $ref: "#/components/schemas/CurrencySymbol"
         name:
@@ -1505,6 +1526,15 @@ components:
           $ref: "#/components/schemas/Fee"
         withdraw_fee:
           $ref: "#/components/schemas/Fee"
+        enabled:
+          type: boolean
+          description: Is the financial integration enabled
+          example: true
+        whitelist:
+          description: "If defined, only these profiles can use this financial integration"
+          type: string
+          example: "[0xC257274276a4E539741Ca11b590B9447B26A8051, 0x96e735e016497d6591ee8125dece17fc2586cb8e]"
+
     CreateFinancialIntegrationRequest:
       type: object
       properties:
