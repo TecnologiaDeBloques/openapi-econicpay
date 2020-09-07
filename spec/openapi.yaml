@@ -1271,7 +1271,7 @@ components:
           description: Publicly displayed email of the profile
           type: array
           format: email
-          example: [ironman@avengers.com, blackwidow@avengers.com]
+          example: ["ironman@avengers.com", "blackwidow@avengers.com"]
         phone_numbers:
           description: Public phone number of the profile.
           type: array
